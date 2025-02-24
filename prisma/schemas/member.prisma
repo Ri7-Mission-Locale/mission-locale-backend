@@ -1,0 +1,16 @@
+model Member {
+    id_member   Int       @id @default(autoincrement())
+    nom         String
+    prenom      String
+    age         Int
+    email       String    @unique
+    avatar      String?
+    createdAt   DateTime  @default(now())
+    id_employee Int?
+    admin       Employee? @relation(fields: [id_employee], references: [id_employee])
+
+    meetings Meeting[]
+    documents Document[]
+
+    @@unique([nom, prenom])
+}

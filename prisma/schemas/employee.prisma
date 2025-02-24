@@ -1,0 +1,17 @@
+
+model Employee {
+  id_employee Int    @id @default(autoincrement())
+  nom           String
+  prenom        String
+  email         String @unique
+  role          Role @default(CONSEILLER)
+  avatar        String?
+  members      Member[]
+
+  @@unique([nom, prenom])
+}
+
+enum Role {
+  CONSEILLER
+  ADMIN
+}
