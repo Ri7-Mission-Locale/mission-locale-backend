@@ -2,6 +2,7 @@
   "name": "mission-locale-backend",
   "version": "1.0.0",
   "main": "src/main.js",
+  "type" : "module",
   "scripts": {
     "dev": "nodemon"
   },
