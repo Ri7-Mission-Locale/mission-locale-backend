@@ -1,0 +1,15 @@
+model Document {
+    id        Int          @id @default(autoincrement())
+    type      DocumentType
+    createdAt DateTime     @default(now())
+    id_member Int?
+    member    Member?      @relation(fields: [id_member], references: [id_member])
+    path String
+}
+
+enum DocumentType {
+    CNI
+    JUSTIFICATION_DOMICILE
+    PASSPORT
+    PERMIS_DE_CONDUIRE
+}
