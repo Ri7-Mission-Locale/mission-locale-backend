@@ -8,6 +8,6 @@ app.use(cors());
 app.use(express.json());
 
 app.listen(port, (err) => {
-    if (!err) return console.error(err);
+    if (err) return console.error(err);
     console.log(`Listen at port ${port}`)
 })
