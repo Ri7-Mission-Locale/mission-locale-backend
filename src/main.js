@@ -10,6 +10,6 @@ app.use(express.json());
 app.use(authenticationRouter);
 
 app.listen(port, (err) => {
-    if (!err) return console.error(err);
+    if (err) return console.error(err);
     console.log(`Listen at port ${port}`)
 })
