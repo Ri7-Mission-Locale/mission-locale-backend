@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import redis from '../utils/redis';
+import redis from '../utils/redis.js';
 
 const tagRouter = express.Router();
 const prisma = new PrismaClient();
