@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 
 meetingRouter.post('/addmeeting', async (req, res) => {
-    const { title, content, startDate, endDate, urgent, id_member } = req.body;
+    const { title, content, startDate, endDate, urgent } = req.body;
     try {
         const meeting = await prisma.meeting.create({
             data: {
@@ -17,7 +17,7 @@ meetingRouter.post('/addmeeting', async (req, res) => {
                 startDate: new Date(startDate),
                 endDate: endDate ? new Date(endDate) : undefined,
                 urgent,
-                id_member,
+                
             },
         });
         res.json(meeting);
@@ -59,7 +59,7 @@ meetingRouter.get('/onemeeting/:id', async (req, res) => {
 
 meetingRouter.patch('/updatemeeting/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, content, startDate, endDate, urgent, id_member } = req.body;
+    const { title, content, startDate, endDate, urgent } = req.body;
     try {
         const meeting = await prisma.meeting.update({
             where: { id: parseInt(id) },
@@ -69,7 +69,7 @@ meetingRouter.patch('/updatemeeting/:id', async (req, res) => {
                 startDate: startDate ? new Date(startDate) : undefined,
                 endDate: endDate ? new Date(endDate) : undefined,
                 urgent,
-                id_member,
+            
             },
         });
         res.json(meeting);
