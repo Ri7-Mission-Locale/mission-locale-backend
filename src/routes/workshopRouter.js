@@ -74,11 +74,17 @@ workshopRouter.post('/workshopupdate/:id', async (req, res) => {
                 startDate: new Date(startDate),
                 endDate: new Date(endDate),
                 tags: {
-                    set: tags.map(tagName => ({ name: tagName })),
+                    // 1) On "reset" tous les tags actuels de l'atelier
+                    set: [],
+                    // 2) On connecte ou on crée les nouveaux tags
+                    connectOrCreate: tags.map(tagName => ({
+                      where: { name: tagName },
+                      create: { name: tagName },
+                    })),
+                  },
                 },
-            },
-            include: { tags: true },
-        });
+                include: { tags: true }, // Pour renvoyer la liste des tags mis à jour dans la réponse
+              });
         res.json(workshop);
     } catch (error) {
         res.status(500).json({ error: 'Erreur lors de la mise à jour de l\'atelier' });
