@@ -5,30 +5,47 @@ class MemberService {
     cache = redis.userCache;
     database = new PrismaClient()
 
+    /* Create user in database and cache */
     async create(data) {
-        const user = await this.database.member.create({ data})
-        if (user) await this.saveToCache(user);
+        const user = await this.database.member.create({ data }) // Create in MySQL
+        if (user) await this.saveToCache(user); // If ok save to cache
         return user;
     }
 
+    /* Get user in database or cache with this id */
     async getById(id) {
-        let user = await this.getFromCacheById(id);
-        if (user) return user;
-        user = await this.database.member.findUnique({ where: { id_member: id } });
+        let user = await this.getFromCacheById(id); // Try to get from cache
+        if (user) return user; // If ok return
+
+        user = await this.database.member.findUnique({ where: { id_member: id } }); // Else try in MySQL
+        if (user) this.saveToCache(user) // If ok save to cache
+        
         return user;
     }
 
+    /* Get user in database or cache with this email */
     async getByMail(email) {
         let user = await this.getFromCacheByMail(email);
-        return user ? user : await this.database.member.findUnique({ where: { email } })
+        if (user) return user;
+
+        user = await this.database.member.findUnique({ where: { email } }); 
+        if (user) this.saveToCache(user);
+        return user;
     }
 
+    /* Update user in database and cache */
     async update(id, data) {
-        const user = await this.database.member.update({where: { id_member: id },data })
-        if (user) this.saveToCache(user);
+        const user = await this.database.member.update({where: { id_member: id }, data }) // Update in MySQL
+        if (user) {
+            if (data.email) {
+                await this.delFromCache(data); // If mail has changed del old mail in cache
+            }
+            this.saveToCache(user) // Save update in MySQL
+        }
         return user
     }
     
+    /* Delete user from database and cache */
     async delete(id) {
         const user = await this.database.member.delete({ where: { id_member: id }});
         if (user) await this.delFromCache(user);
@@ -52,16 +69,16 @@ class MemberService {
     // Save user in redis cache
     async saveToCache(user) {
         return await Promise.all([
-            this.cache.save(`user:${user.id}`, JSON.stringify(user), 'EX', 60 * 60),
-            this.cache.save(`user:${user.mail}`, user.id, 'EX', 60 * 60)
+            this.cache.set(`user:${user.id_member}`, JSON.stringify(user), 'EX', 60 * 60),
+            this.cache.set(`user:${user.email}`, user.id_member, 'EX', 60 * 60)
         ])
     }
 
      // Delete user from redis cache
     async delFromCache(user) {
         return await Promise.all([
-            this.cache.del(`user:${user.id}`),
-            this.cache.del(`user:${user.mail}`)
+            this.cache.del(`user:${user.id_member}`),
+            this.cache.del(`user:${user.email}`)
         ])
     }
 }
