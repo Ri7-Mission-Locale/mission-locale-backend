@@ -86,7 +86,7 @@ workshopRouter.post('/workshopupdate/:id', async (req, res) => {
 });
 
 
-workshopRouter.post('/deleteworkshop:id', async (req, res) => {
+workshopRouter.delete('/deleteworkshop:id', async (req, res) => {
     const { id } = req.params;
     try {
         await prisma.workshop.delete({

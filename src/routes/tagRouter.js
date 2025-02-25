@@ -57,7 +57,7 @@ tagRouter.post('/updatetag/:id', async (req, res) => {
     }
 });
 
-tagRouter.post('/deletetag/:id', async (req, res) => {
+tagRouter.delete('/deletetag/:id', async (req, res) => {
     const { id } = req.params;
     try {
         await prisma.tag.delete({

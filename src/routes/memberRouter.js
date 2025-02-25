@@ -2,7 +2,7 @@ import express from 'express'
 import MemberService from '../services/MemberService';
 
 const authenticationRouter = express.Router();
-const memberService = new MemberService();
+// const memberService = new MemberService();
 
 /* User's account creation */
 authenticationRouter.put("/auth/register", (req, res) => {
