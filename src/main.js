@@ -3,6 +3,7 @@ import cors from "cors"
 import authenticationRouter from './routes/authenticationRouter.js'
 import workshopRouter from "./routes/workshopRouter.js";
 import tagRouter from "./routes/tagRouter.js";
+import authenticationRouter from './routes/memberRouter.js'
 
 const port = process.env.NODE_PORT || 3000;
 const app = express();
