@@ -7,6 +7,9 @@ const memberService = new MemberService();
 /* User's account creation */
 authenticationRouter.put("/auth/register", (req, res) => {
     
+
+
+    const user = memberService.create(req.body);
 })
 
 /* Update user's mail before validation */
