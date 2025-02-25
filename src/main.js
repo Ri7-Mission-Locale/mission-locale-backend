@@ -3,19 +3,8 @@ import cors from "cors"
 
 
 import workshopRouter from "./routes/workshopRouter.js";
-
 import meetingRouter from "./routes/meetingRouter.js";
-
-
 import counsellorRouter from "./routes/counsellorRouter.js";
-
-
-
-import counsellorRouter from "./routes/counsellorRouter.js";
-import workshopRouter from "./routes/workshopRouter.js";
-import tagRouter from "./routes/tagRouter.js";
-import meetingRouter from "./routes/meetingRouter.js";
-
 import memberRouter from "./routes/memberRouter.js";
 
 
@@ -30,19 +19,8 @@ app.use(express.json());
 
 
 app.use(counsellorRouter);
-
-
 app.use(workshopRouter)
-
 app.use(meetingRouter)
-
-
-
-app.use(counsellorRouter);
- 
-
-
-
 app.use(memberRouter);
 
 
