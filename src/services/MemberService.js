@@ -1,28 +1,34 @@
 import { PrismaClient } from "@prisma/client";
-import redis from "../utils/redis";
+import redis from "../utils/redis.js";
 
 class MemberService {
     cache = redis.userCache;
     database = new PrismaClient()
 
+    async create(data) {
+        const user = await this.database.member.create({ data})
+        if (user) await this.saveToCache(user);
+        return user;
+    }
+
     async getById(id) {
         let user = await this.getFromCacheById(id);
         if (user) return user;
-
         user = await this.database.member.findUnique({ where: { id_member: id } });
         return user;
+    }
 
-    }
     async getByMail(email) {
-        let user = this.getFromCacheByMail(email);
-        if (user) return user;
-        user = await this.database.member.findUnique({ where: { email } });
+        let user = await this.getFromCacheByMail(email);
+        return user ? user : await this.database.member.findUnique({ where: { email } })
     }
+
     async update(id, data) {
         const user = await this.database.member.update({where: { id_member: id },data })
         if (user) this.saveToCache(user);
         return user
     }
+    
     async delete(id) {
         const user = await this.database.member.delete({ where: { id_member: id }});
         if (user) await this.delFromCache(user);

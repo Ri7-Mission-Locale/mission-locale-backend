@@ -3,6 +3,7 @@ import cors from "cors"
 import workshopRouter from "./routes/workshopRouter.js";
 import tagRouter from "./routes/tagRouter.js";
 import meetingRouter from "./routes/meetingRouter.js";
+import memberRouter from "./routes/memberRouter.js";
 
 const port = process.env.NODE_PORT || 3000;
 const app = express();
@@ -13,6 +14,7 @@ app.use(workshopRouter)
 app.use(tagRouter)
 app.use(meetingRouter)
 
+app.use(memberRouter);
 
 app.listen(port, (err) => {
     if (err) return console.error(err);
