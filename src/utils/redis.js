@@ -1,11 +1,13 @@
 import Redis from "ioredis";
 
+// Redis global configuration
 const defaultConf = {
-    host: process.env.REDIS_HOST || "127.0.0.1",
+    host: process.env.REDIS_HOST || "0.0.0.0",
     port: process.env.REDIS_PORT || 6379,
-    username: process.env.REDIS_USER || "default",
-    password: process.env.REDIS_PORT || "my-top-secret", 
+    username: process.env.REDIS_USER || "",
+    password: process.env.REDIS_PORT || "", 
 }
+
 const userCache = new Redis({
     name: "user",
     db: 0,

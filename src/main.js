@@ -1,13 +1,13 @@
 import express from "express"
 import cors from "cors"
-import authenticationRouter from './routes/memberRouter.js'
+import memberRouter from "./routes/memberRouter.js";
 
 const port = process.env.NODE_PORT || 3000;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(authenticationRouter);
+app.use(memberRouter);
 
 app.listen(port, (err) => {
     if (err) return console.error(err);

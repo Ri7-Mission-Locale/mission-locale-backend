@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import redis from "../utils/redis";
+import redis from "../utils/redis.js";
 
 class MemberService {
     cache = redis.userCache;

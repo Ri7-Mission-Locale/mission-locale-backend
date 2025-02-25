@@ -1,35 +1,52 @@
 import express from 'express'
-import MemberService from '../services/MemberService';
+import MemberService from '../services/MemberService.js';
 
-const authenticationRouter = express.Router();
+const memberRouter = express.Router();
 const memberService = new MemberService();
 
 /* User's account creation */
-authenticationRouter.put("/auth/register", (req, res) => {
-    
+memberRouter.put("/member/register", (req, res) => {
+    try {
 
+    } catch (err) {
 
-    const user = memberService.create(req.body);
+    }
 })
 
 /* Update user's mail before validation */
-authenticationRouter.patch("/auth/changemail/:token", (req, res) => {
+memberRouter.patch("/member/changemail/:token", (req, res) => {
+    try {
 
+    } catch (err) {
+
+    }
 })
 
 /* User's mail validation */
-authenticationRouter.patch("/auth/validate/:token", (req, res) => {
+memberRouter.patch("/member/validate/:token", (req, res) => {
+    try {
 
+    } catch (err) {
+
+    }
 })
 
 /* Handle user's connexion and store session */
-authenticationRouter.post("/auth/login", (req, res) => {
+memberRouter.post("/member/login", (req, res) => {
+    try {
 
+    } catch (err) {
+
+    }
 })
 
 /* Refresh user session  */
-authenticationRouter.get("/auth/refresh", (req, res) => {
+memberRouter.get("/member/refresh", (req, res) => {
+    try {
 
+    } catch (err) {
+    
+    }
 })
 
-export default authenticationRouter;
+export default memberRouter;
