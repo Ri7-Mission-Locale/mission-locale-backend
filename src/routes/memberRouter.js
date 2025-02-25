@@ -1,6 +1,9 @@
 import express from 'express'
 import MemberService from '../services/MemberService.js';
 
+
+const authenticationRouter = express.Router();
+// const memberService = new MemberService();
 const memberRouter = express.Router();
 const memberService = new MemberService();
 
