@@ -1,8 +1,10 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
+import redis from '../utils/redis';
 
 const tagRouter = express.Router();
 const prisma = new PrismaClient();
+const cache = redis.messageCache
 
 
 
@@ -12,6 +14,8 @@ tagRouter.post('/addtag', async (req, res) => {
         const tag = await prisma.tag.create({
             data: { name },
         });
+            
+        
         res.json(tag);
     } catch (error) {
         res.status(500).json({ error: 'Erreur lors de la création du tag' });

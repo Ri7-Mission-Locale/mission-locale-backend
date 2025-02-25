@@ -2,7 +2,7 @@
   "name": "mission-locale-backend",
   "version": "1.0.0",
   "main": "src/main.js",
-  "type" : "module",
+  "type": "module",
   "scripts": {
     "dev": "nodemon"
   },
@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "ioredis": "^5.5.0",
-    "prisma": "^6.4.1"
+    "prisma": "^6.4.1",
+    "redis": "^4.7.0"
   }
 }
