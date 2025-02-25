@@ -3,6 +3,7 @@ model Employee {
   id_employee Int    @id @default(autoincrement())
   nom           String
   prenom        String
+  password      String
   email         String @unique
   role          Role @default(CONSEILLER)
   avatar        String?
