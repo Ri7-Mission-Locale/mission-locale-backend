@@ -33,7 +33,7 @@ const messageCache = new Redis({
 });
 const workshopCache = new Redis({
     name: "workshop",
-    db: 3,
+    db: 8,
     ...defaultConf,
   });
 
