@@ -10,7 +10,7 @@ import {
 
 const workshopRouter = express.Router();
 
-// Liste de tous les workshops
+// all workshops
 workshopRouter.get('/workshop', async (req, res) => {
   try {
     const workshops = await getAllWorkshops();
@@ -21,7 +21,7 @@ workshopRouter.get('/workshop', async (req, res) => {
   }
 });
 
-// Créer un workshop
+//  workshop create
 workshopRouter.post('/workshop/create', async (req, res) => {
   try {
     const workshop = await createWorkshop(req.body);
@@ -32,7 +32,7 @@ workshopRouter.post('/workshop/create', async (req, res) => {
   }
 });
 
-// Recuperer un workshop par ID
+// get workshop by id
 workshopRouter.get('/workshop/:id', async (req, res) => {
   try {
     const workshop = await getWorkshopById(req.params.id);
@@ -47,7 +47,7 @@ workshopRouter.get('/workshop/:id', async (req, res) => {
   }
 });
 
-// Mettre jour un workshop
+// update workshop
 workshopRouter.post('/workshop/update/:id', async (req, res) => {
   try {
     const workshop = await updateWorkshop(req.params.id, req.body);
@@ -58,8 +58,7 @@ workshopRouter.post('/workshop/update/:id', async (req, res) => {
   }
 });
 
-// Supprimer un workshop
-
+// delete  workshop
 workshopRouter.delete('/workshop/delete/:id', async (req, res) => {
   try {
     await deleteWorkshop(req.params.id);
