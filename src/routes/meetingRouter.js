@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const meetingRouter = express.Router();
 const prisma = new PrismaClient();
 
-meetingRouter.post('/addmeeting', async (req, res) => {
+meetingRouter.post('/meeting/create', async (req, res) => {
     const { title, content, startDate, endDate, urgent } = req.body;
     try {
         const meeting = await prisma.meeting.create({
@@ -25,7 +25,7 @@ meetingRouter.post('/addmeeting', async (req, res) => {
 
 
 
-meetingRouter.get('/allmeeting', async (req, res) => {
+meetingRouter.get('/meeting/get', async (req, res) => {
     try {
         const meetings = await prisma.meeting.findMany();
         res.json(meetings);
@@ -36,7 +36,7 @@ meetingRouter.get('/allmeeting', async (req, res) => {
 
 
 
-meetingRouter.get('/onemeeting/:id', async (req, res) => {
+meetingRouter.get('/meeting/get/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const meeting = await prisma.meeting.findUnique({
@@ -54,7 +54,7 @@ meetingRouter.get('/onemeeting/:id', async (req, res) => {
 
 
 
-meetingRouter.patch('/updatemeeting/:id', async (req, res) => {
+meetingRouter.patch('/meeting/update/:id', async (req, res) => {
     const { id } = req.params;
     const { title, content, startDate, endDate, urgent } = req.body;
     try {
@@ -77,7 +77,7 @@ meetingRouter.patch('/updatemeeting/:id', async (req, res) => {
 
 
 
-meetingRouter.delete('/deletemeeting/:id', async (req, res) => {
+meetingRouter.delete('/meeting/delete/:id', async (req, res) => {
     const { id } = req.params;
     try {
         await prisma.meeting.delete({

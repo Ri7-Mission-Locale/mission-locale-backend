@@ -11,7 +11,7 @@ import {
 const workshopRouter = express.Router();
 
 // Liste de tous les workshops
-workshopRouter.get('/allworkshop', async (req, res) => {
+workshopRouter.get('/workshop', async (req, res) => {
   try {
     const workshops = await getAllWorkshops();
     res.json(workshops);
@@ -22,7 +22,7 @@ workshopRouter.get('/allworkshop', async (req, res) => {
 });
 
 // Créer un workshop
-workshopRouter.post('/addworkshop', async (req, res) => {
+workshopRouter.post('/workshop/create', async (req, res) => {
   try {
     const workshop = await createWorkshop(req.body);
     res.json(workshop);
@@ -32,8 +32,8 @@ workshopRouter.post('/addworkshop', async (req, res) => {
   }
 });
 
-// Récupérer un workshop par ID
-workshopRouter.get('/oneworkshop/:id', async (req, res) => {
+// Recuperer un workshop par ID
+workshopRouter.get('/workshop/:id', async (req, res) => {
   try {
     const workshop = await getWorkshopById(req.params.id);
     if (workshop) {
@@ -47,8 +47,8 @@ workshopRouter.get('/oneworkshop/:id', async (req, res) => {
   }
 });
 
-// Mettre à jour un workshop
-workshopRouter.post('/workshopupdate/:id', async (req, res) => {
+// Mettre jour un workshop
+workshopRouter.post('/workshop/update/:id', async (req, res) => {
   try {
     const workshop = await updateWorkshop(req.params.id, req.body);
     res.json(workshop);
@@ -59,8 +59,8 @@ workshopRouter.post('/workshopupdate/:id', async (req, res) => {
 });
 
 // Supprimer un workshop
-// (Corrigé : /deleteworkshop/:id)
-workshopRouter.delete('/deleteworkshop/:id', async (req, res) => {
+
+workshopRouter.delete('/workshop/delete/:id', async (req, res) => {
   try {
     await deleteWorkshop(req.params.id);
     res.json({ message: 'Atelier supprimé avec succès' });
