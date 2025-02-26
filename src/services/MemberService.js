@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import redis from "../utils/redis.js";
+import { hashPassword } from "../middlewares/hashPassword.js";
 
 class MemberService {
     cache = redis.userCache;
-    database = new PrismaClient()
+    database = new PrismaClient().$extends(hashPassword);
 
     /* Create user in database and cache */
     async create(data) {
@@ -42,7 +43,7 @@ class MemberService {
             }
             this.saveToCache(user) // Save update in MySQL
         }
-        return user
+        return user;
     }
     
     /* Delete user from database and cache */
@@ -57,7 +58,8 @@ class MemberService {
      */
     // Get user from redis cache by id.
     async getFromCacheById(id) {
-        return await this.cache.get(`user:${id}`);
+        const user = await this.cache.get(`user:${id}`)
+        return user ? JSON.parse(user) : null;
     }
 
     // Get user from redis cache by mail.
