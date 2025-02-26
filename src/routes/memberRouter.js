@@ -7,7 +7,7 @@ const memberService = new MemberService();
 
 /* User's account creation */
 memberRouter.put("/member/register", async (req, res) => {
-    if (req.password !== req.confirmPassword) return res.status(301).json("Invalid confirm password")
+    if (req.body.password !== req.body.confirmPassword) return res.status(301).json("Invalid confirm password")
     try {
         const validatedUser = await registerMemberSchema.validate(req.body, { abortEarly: false });
         const savedUser = memberService.create(validatedUser);

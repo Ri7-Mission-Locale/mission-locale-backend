@@ -1,7 +1,5 @@
 import express from "express"
 import cors from "cors"
-
-
 import workshopRouter from "./routes/workshopRouter.js";
 import meetingRouter from "./routes/meetingRouter.js";
 import counsellorRouter from "./routes/counsellorRouter.js";
@@ -14,15 +12,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
-
-
-
 app.use(counsellorRouter);
+
 app.use(workshopRouter)
 app.use(meetingRouter)
-app.use(memberRouter);
 
+
+
+
+
+
+
+
+app.use(memberRouter);
 
 app.listen(port, (err) => {
     if (err) return console.error(err);

@@ -4,9 +4,6 @@ import { PrismaClient } from '@prisma/client';
 const meetingRouter = express.Router();
 const prisma = new PrismaClient();
 
-
-
-
 meetingRouter.post('/addmeeting', async (req, res) => {
     const { title, content, startDate, endDate, urgent } = req.body;
     try {
