@@ -14,15 +14,21 @@ const userCache = new Redis({
     ...defaultConf
 });
 
+const tokenCache = new Redis({
+    name: "tokens",
+    db: 1,
+    ...defaultConf
+});
+
 const meetingCache = new Redis({
     name: "meeting",
-    db: 1,
+    db: 2,
     ...defaultConf
 });
 
 const messageCache = new Redis({
     name: "message",
-    db: 2,
+    db: 3,
     ...defaultConf
 });
 const workshopCache = new Redis({
@@ -31,4 +37,5 @@ const workshopCache = new Redis({
     ...defaultConf,
   });
 
-export default { userCache, meetingCache, messageCache,workshopCache };
+
+export default { userCache, tokenCache, meetingCache, messageCache, workshopCache };
