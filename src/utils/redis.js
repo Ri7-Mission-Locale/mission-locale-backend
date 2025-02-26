@@ -24,5 +24,10 @@ const messageCache = new Redis({
     db: 2,
     ...defaultConf
 });
+const workshopCache = new Redis({
+    name: "workshop",
+    db: 3,
+    ...defaultConf,
+  });
 
-export default { userCache, meetingCache, messageCache };
+export default { userCache, meetingCache, messageCache,workshopCache };
