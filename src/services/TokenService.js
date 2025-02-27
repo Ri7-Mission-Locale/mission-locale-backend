@@ -1,7 +1,9 @@
-import { PrismaClient } from "@prisma/client/extension";
-import redis from "../utils/redis";
-import { sign, verify } from 'jsonwebtoken';
+import { PrismaClient } from "@prisma/client";
+import redis from "../utils/redis.js";
+import jwt from 'jsonwebtoken';
 import { randomBytes } from 'crypto';
+
+const { sign, verify } = jwt;
 
 class TokenService {
 
@@ -21,7 +23,6 @@ class TokenService {
 
         return token;
     }
-
 
 
     /* Validate a token and return user id and type */
@@ -48,16 +49,16 @@ class TokenService {
                 this.delete(key),
                 this.deleteFromCache(key)
             ])
-        } catch (err) {}
+        } catch (err) { }
     }
-    
+
     async get(tokenId) {
         let tokenData = await this.getInCache(key);
         if (tokenData) return tokenData;
 
         tokenData = await this.database.token.findUnique({ where: { token: tokenId } });
         if (tokenData) this.saveInCache(tokenId, tokenData)
-        
+
         return tokenData;
     }
 
@@ -71,7 +72,7 @@ class TokenService {
         this.saveInCache(tokenId, tokenData);
     }
     async delete(tokenId) {
-        await this.database.deleteMany({ where: { token: tokenId }})
+        await this.database.deleteMany({ where: { token: tokenId } })
     }
 
     async getInCache(tokenId) {
