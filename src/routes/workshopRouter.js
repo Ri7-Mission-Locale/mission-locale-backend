@@ -1,19 +1,16 @@
 import express from 'express';
-
-import {
-  getAllWorkshops,
-  createWorkshop,
-  getWorkshopById,
-  updateWorkshop,
-  deleteWorkshop
-} from '../services/workshopService.js';
+import WorkshopService from '../services/workshopService.js';
 
 const workshopRouter = express.Router();
+const workshopService = new WorkshopService();
 
-// all workshops
+
+
+
+// All workshops
 workshopRouter.get('/workshop', async (req, res) => {
   try {
-    const workshops = await getAllWorkshops();
+    const workshops = await workshopService.getAll();
     res.json(workshops);
   } catch (error) {
     console.error(error);
@@ -21,21 +18,21 @@ workshopRouter.get('/workshop', async (req, res) => {
   }
 });
 
-//  workshop create
+// Create workshop
 workshopRouter.post('/workshop/create', async (req, res) => {
   try {
-    const workshop = await createWorkshop(req.body);
+    const workshop = await workshopService.create(req.body);
     res.json(workshop);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Erreur lors de la création de l\'atelier' });
+    res.status(500).json({ error: 'Erreur lors de la création de l atelier' });
   }
 });
 
-// get workshop by id
+// Get workshop by id
 workshopRouter.get('/workshop/:id', async (req, res) => {
   try {
-    const workshop = await getWorkshopById(req.params.id);
+    const workshop = await workshopService.getById(req.params.id);
     if (workshop) {
       res.json(workshop);
     } else {
@@ -43,33 +40,30 @@ workshopRouter.get('/workshop/:id', async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Erreur lors de la récupération de l\'atelier' });
+    res.status(500).json({ error: 'Erreur lors de la récupération de l atelier' });
   }
 });
 
-// update workshop
+// Update workshop
 workshopRouter.post('/workshop/update/:id', async (req, res) => {
   try {
-    const workshop = await updateWorkshop(req.params.id, req.body);
+    const workshop = await workshopService.update(req.params.id, req.body);
     res.json(workshop);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Erreur lors de la mise à jour de l\'atelier' });
+    res.status(500).json({ error: 'Erreur lors de la mise à jour de l atelier' });
   }
 });
 
-// delete  workshop
+// Delete workshop
 workshopRouter.delete('/workshop/delete/:id', async (req, res) => {
   try {
-    await deleteWorkshop(req.params.id);
+    await workshopService.delete(req.params.id);
     res.json({ message: 'Atelier supprimé avec succès' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Erreur lors de la suppression de l\'atelier' });
+    res.status(500).json({ error: 'Erreur lors de la suppression de l atelier' });
   }
 });
 
 export default workshopRouter;
-
-
-
