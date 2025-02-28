@@ -1,16 +1,19 @@
 import express from 'express'
 import MemberService from '../services/MemberService.js';
 import { registerMemberSchema, loginMemberSchema, editMemberSchema } from '../validators/memberValidator.js';
-import { sign } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import TokenService from '../services/TokenService.js';
 import { compareSync } from 'bcrypt';
 
+const { sign } = jwt;
 const memberRouter = express.Router();
 const memberService = new MemberService();
 const tokenService = new TokenService();
 
 // IMPORTANT SECRET KEY
 const ACCESS_TOKEN_KEY = process.env.JWT_ACCESS_KEY || "!@^ Awesome key for access token §&ù@"
+
+
 
 /* User's account creation */
 memberRouter.put("/member/register", async (req, res) => {
@@ -27,6 +30,8 @@ memberRouter.put("/member/register", async (req, res) => {
     }
 })
 
+
+
 /* Handle user's connexion and store session */
 memberRouter.post("/member/login", async (req, res) => {
     try {
@@ -35,7 +40,7 @@ memberRouter.post("/member/login", async (req, res) => {
 
         // Check password
         if (!savedUser || !compareSync(validatedUser.password, savedUser.password)) {
-            return res.status(300).json({ message: "Incorrect mail or password"});
+            return res.status(300).json({ message: "Incorrect mail or password" });
         }
 
         const expiration = validatedUser.keepConnected ? 7 * 24 * 60 * 60 * 1000 : 3 * 60 * 60 * 1000;
@@ -54,10 +59,13 @@ memberRouter.post("/member/login", async (req, res) => {
                 maxAge: maxAge
             })
             .json({ user: savedUser, token: accessToken });
+
     } catch (err) {
         res.status(300).json(err);
     }
 });
+
+
 
 memberRouter.patch("/member/edit", async (req, res) => {
     try {
@@ -72,12 +80,14 @@ memberRouter.patch("/member/edit", async (req, res) => {
     }
 });
 
+
+
 memberRouter.patch("/member/refresh", async (req, res) => {
     const token = req.cookies.refreshToken;
-    
+
     try {
         const { id, type } = tokenService.validate(token, "REFRESH_TOKEN");
-        if (!id || !type || type !== "MEMBER") throw { message: "Invalid refresh token"}
+        if (!id || !type || type !== "MEMBER") throw { message: "Invalid refresh token" }
 
         const accessToken = sign({ id }, ACCESS_TOKEN_KEY, { expiresIn: "15m" });
 
@@ -86,6 +96,8 @@ memberRouter.patch("/member/refresh", async (req, res) => {
         res.status(300).json(err);
     }
 });
+
+
 
 memberRouter.post("/member/logout", async (req, res) => {
     const token = req.cookies.refreshToken;
