@@ -24,13 +24,9 @@ async function authguard(req, res, next) {
         if (user) {
             req.user = JSON.parse(user);
             next();
+            return;
         }
-
-        if (!user) throw {message: "Invalid access token"};
-
-        req.user = user;
-        next()
-        
+        throw {message: "Invalid access token"};
     } catch (err) {
         return res.status(401).json({message: err});
     }

@@ -15,6 +15,7 @@ const ACCESS_TOKEN_KEY = process.env.JWT_ACCESS_KEY || "!@^ Awesome key for acce
 
 
 
+
 /* User's account creation */
 memberRouter.put("/member/register", async (req, res) => {
     if (req.body.password !== req.body.confirmPassword) return res.status(301).json("Invalid confirm password")
