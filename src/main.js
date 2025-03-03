@@ -11,10 +11,19 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
 app.use(counsellorRouter);
+
 app.use(workshopRouter)
 app.use(meetingRouter)
-app.use(counsellorRouter);
+
+
+
+
+
+
+
+
 app.use(memberRouter);
 
 app.listen(port, (err) => {

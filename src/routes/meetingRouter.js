@@ -1,94 +1,74 @@
 import express from 'express';
-import { PrismaClient } from '@prisma/client';
+import MeetingService from '../services/meetingService.js';
 
 const meetingRouter = express.Router();
-const prisma = new PrismaClient();
+const meetingService = new MeetingService();
 
-meetingRouter.post('/addmeeting', async (req, res) => {
-    const { title, content, startDate, endDate, urgent } = req.body;
+
+//ALL meeting
+
+meetingRouter.get('/meeting', async (req, res)=>{
     try {
-        const meeting = await prisma.meeting.create({
-            data: {
-                title,
-                content,
-                startDate: new Date(startDate),
-                endDate: endDate ? new Date(endDate) : undefined,
-                urgent,
-                
-            },
-        });
-        res.json(meeting);
+        const meeting = await meetingService.getAll()
+        res.json(meeting)
+        
     } catch (error) {
-        res.status(500).json({ error: 'Erreur lors de la création du rendez-vous' });
-    }
-});
-
-
-
-meetingRouter.get('/allmeeting', async (req, res) => {
-    try {
-        const meetings = await prisma.meeting.findMany();
-        res.json(meetings);
-    } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Erreur lors de la récupération des rendez-vous' });
     }
-});
+})
 
+// Create meeting
 
-
-meetingRouter.get('/onemeeting/:id', async (req, res) => {
-    const { id } = req.params;
+meetingRouter.post('/meeting/create', async (req, res)=>{
     try {
-        const meeting = await prisma.meeting.findUnique({
-            where: { id: parseInt(id) },
-        });
+        const meeting = await meetingService.create(req.body)
+        res.json(meeting)
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erreur lors de la création des rendez-vous' });
+    }
+})
+
+// get one meeting by id
+
+meetingRouter.post('/meeting/:id', async (req,res)=>{
+    try {
+        const meeting = await meetingService.getById(req.params.id)
         if (meeting) {
-            res.json(meeting);
+            res.json(meeting)
         } else {
-            res.status(404).json({ error: 'rendez-vous non trouvée' });
+            res.status(404).json({ error: 'Rendez vous non trouvé' });
+
         }
     } catch (error) {
-        res.status(500).json({ error: 'Erreur lors de la récupération rendez-vous' });
+        console.error(error);
+        res.status(500).json({ error: 'Erreur lors de la récupération des rendez vous' });
     }
-});
+})
 
+// update meeting 
 
-
-meetingRouter.patch('/updatemeeting/:id', async (req, res) => {
-    const { id } = req.params;
-    const { title, content, startDate, endDate, urgent } = req.body;
+meetingRouter.post('/meeting/update/:id', async (req, res)=>{
     try {
-        const meeting = await prisma.meeting.update({
-            where: { id: parseInt(id) },
-            data: {
-                title,
-                content,
-                startDate: startDate ? new Date(startDate) : undefined,
-                endDate: endDate ? new Date(endDate) : undefined,
-                urgent,
-            
-            },
-        });
-        res.json(meeting);
+        const meeting = await meetingService.update(req.params.id, req.body)
+    res.json(meeting)
     } catch (error) {
-        res.status(500).json({ error: 'Erreur lors de la mise à jour du rendez-vous' });
+        console.error(error);
+    res.status(500).json({ error: 'Erreur lors de la mise à jour des rendez vous' });
     }
-});
+})
 
+// delete meeting 
 
-
-meetingRouter.delete('/deletemeeting/:id', async (req, res) => {
-    const { id } = req.params;
+meetingRouter.delete('/meeting/delete/:id', async (req,res)=>{
     try {
-        await prisma.meeting.delete({
-            where: { id: parseInt(id) },
-        });
-        res.json({ message: 'rendez-vous supprimée avec succès' });
+        const meeting = await meetingService.delete(req.params.id)
+        res.json({message: 'rendez vous supprimer avec succès'})
     } catch (error) {
-        res.status(500).json({ error: 'Erreur lors de la suppression du rendez vous' });
+        console.error(error);
+        res.status(500).json({ error: 'Erreur lors de la suppression des rendez vous' });
     }
-});
+})
 
-
-
-export default meetingRouter;
+export default meetingRouter
