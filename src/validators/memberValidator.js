@@ -22,4 +22,4 @@ const editMemberSchema = object({
     repeatPassword: string().min(8).max(100),
 })
 
-export default { registerMemberSchema, loginMemberSchema, editMemberSchema};
+export { registerMemberSchema, loginMemberSchema, editMemberSchema };

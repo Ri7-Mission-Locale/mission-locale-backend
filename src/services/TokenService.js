@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client/extension";
-import redis from "../utils/redis";
+import redis from "../utils/redis.js";
 import { sign, verify } from 'jsonwebtoken';
 import { randomBytes } from 'crypto';
 
