@@ -1,15 +1,15 @@
 /*
  Table pour les rdv 
 */
-model RDV {
+model Appointment {
     rdv_id Int @id @unique @default(autoincrement())
     title String 
     content String
-    type RDVType @default(INSCRIPTION)
+    type AppointmentType @default(INSCRIPTION)
     date DateTime
     duration DateTime
 
-    state RDVState @default(PENDING)
+    state AppointmentState @default(PENDING)
 
     advisor_id Int
     advisor User @relation("rdv_advisor", fields: [advisor_id], references: [user_id])
@@ -21,13 +21,13 @@ model RDV {
 }
 
 // Exemple de type de rdv
-enum RDVType {
+enum AppointmentType {
     INSCRIPTION 
     OTHER
 }
 
 // Status du rendez vous (si celui-ci est confirmer, annullé, rater ou passé)
-enum RDVState {
+enum AppointmentState {
     PENDING
     VALIDATED
     CANCELLED

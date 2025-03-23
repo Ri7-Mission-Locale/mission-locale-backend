@@ -9,8 +9,8 @@ model User {
     queue    QueueEntry[]
 
 
-    rdv_advisor RDV[] @relation("rdv_advisor") // RDV du conseillé
-    rdv_member  RDV[] @relation("rdv_member") // RDV de l'adhérent
+    rdv_advisor Appointment[] @relation("rdv_advisor") // RDV du conseillé
+    rdv_member  Appointment[] @relation("rdv_member") // RDV de l'adhérent
 
     received_messages Message[] @relation("receiver") // Messages reçus
     sended_messages   Message[] @relation("sender") // Messages envoyés
