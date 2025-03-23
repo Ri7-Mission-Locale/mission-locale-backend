@@ -1,22 +1,23 @@
+/*
+Tables pour stoquer les tokens
+*/
 model Token {
-    id_token Int @id @default(autoincrement())
-    tokenType TokenType
+    token_id Int @id @unique @default(autoincrement())
     token String @unique
+    agent String? // Verifier le "user agent" pour les conseillés / admins ?
+    type TokenType
 
-    type_user UserType
-    id_user Int
+    user_id Int
+    user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
     expiresAt DateTime
+    
     createdAt DateTime @default(now())
-}
-
-enum UserType {
-    EMPLOYEE
-    MEMBER
+    updatedAt DateTime @updatedAt
 }
 
 enum TokenType {
     REFRESH_TOKEN
-    UNVERIFIED_MAIL_CHANGE
-    MAIL_VALIDATE
+    MAIL_VALIDATION
 }
+

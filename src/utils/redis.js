@@ -8,28 +8,16 @@ const defaultConf = {
     password: process.env.REDIS_PASSWORD || undefined
 }
 
-const userCache = new Redis({
-    name: "user",
-    db: 0,
-    ...defaultConf
-});
+// Store existing caches
+const caches = new Map();
 
-const tokenCache = new Redis({
-    name: "tokens",
-    db: 1,
-    ...defaultConf
-});
+// Get cache from store or create cache and store it
+function getCache(name) {
+    let cache = caches.get(name);
+    if (cache) return cache;
+    cache = new Redis({ name, db: caches.size, ...defaultConf });
+    caches.set(name, cache);
+    return cache;
+}
 
-const meetingCache = new Redis({
-    name: "meeting",
-    db: 2,
-    ...defaultConf
-});
-
-const messageCache = new Redis({
-    name: "message",
-    db: 3,
-    ...defaultConf
-});
-
-export default { userCache, tokenCache, meetingCache, messageCache };
+export default getCache;

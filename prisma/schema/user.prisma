@@ -1,0 +1,32 @@
+model User {
+    user_id   Int      @id @unique @default(autoincrement())
+    email     String   @unique
+    password  String
+    role      Role     @default(USER)
+    verified  Boolean  @default(false)
+    token    Token[]
+    document Document[]
+    queue    QueueEntry[]
+
+
+    rdv_advisor RDV[] @relation("rdv_advisor") // RDV du conseillé
+    rdv_member  RDV[] @relation("rdv_member") // RDV de l'adhérent
+
+    received_messages Message[] @relation("receiver") // Messages reçus
+    sended_messages   Message[] @relation("sender") // Messages envoyés
+
+    // Liste des adhérents pour le conseillé et liste des adhérants pour le conseillé
+    users_id Int
+    User     User[] @relation("advisor")
+    advisor  User?  @relation("advisor", fields: [users_id], references: [user_id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+enum Role {
+    USER
+    ADVISOR
+    ADMIN
+}
+

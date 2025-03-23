@@ -1,0 +1,88 @@
+model Informations {
+    information_id Int @id @unique @default(autoincrement())
+
+    gender     Gender
+    first_name String
+    last_name  String
+
+    phone      String  @db.Char(8)
+    home_phone String? @db.Char(8)
+
+    birth_date       DateTime
+    birth_city       String
+    family_situation Situation
+    marital_name     String?
+    childrens        Int       @default(0)
+
+    home_number       Int
+    home_address      String
+    home_postal_code  Int
+    home_municipality String
+
+    nationnality     Nationnality
+    hosting          Hosting
+    driving_liscence DrivingLiscence
+    transport        Transport
+    social_coverage  SocialCoverage
+    ressources       Ressources
+
+    // TODO Diplome, emploies formations
+
+    description String?
+}
+
+enum Ressources {
+    NONE
+    SALARIES
+    ARE_POLE_EMPLOI
+    RSA
+    OTHER
+}
+
+enum SocialCoverage {
+    NONE
+    MUTUELLE
+    RSA
+    SOCIAL_SECURITY
+    BENEFICIARIES
+    RIGHT_HOLDERS
+    CMU
+}
+
+enum Transport {
+    NONE
+    AUTO
+    MOTO_OR_CYCLO
+}
+
+enum DrivingLiscence {
+    NO
+    WAINTING
+    YES
+}
+
+enum Hosting {
+    AUTO
+    FAMILLY
+    FOYER
+    OTHER
+    PROBLEMS
+}
+
+enum Nationnality {
+    FR
+    CEE
+    HORS_CEE
+    JAPD
+    RECENSE
+}
+
+enum Gender {
+    M
+    MME
+}
+
+enum Situation {
+    SINGLE
+    MARRIED
+}

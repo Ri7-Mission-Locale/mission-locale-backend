@@ -1,10 +1,15 @@
+/*
+ Table pour les documents
+*/
 model Document {
-    id        Int          @id @default(autoincrement())
-    type      DocumentType
-    createdAt DateTime     @default(now())
-    id_member Int?
-    member    Member?      @relation(fields: [id_member], references: [id_member])
+    document_id Int @id @unique @default(autoincrement())
+    type DocumentType
     path String
+    user_id Int
+    User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+    
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 enum DocumentType {
@@ -12,4 +17,5 @@ enum DocumentType {
     JUSTIFICATION_DOMICILE
     PASSPORT
     PERMIS_DE_CONDUIRE
+    OTHER
 }

@@ -2,12 +2,13 @@ import { PrismaClient } from "@prisma/client";
 import redis from "../utils/redis.js";
 import jwt from 'jsonwebtoken';
 import { randomBytes } from 'crypto';
+import getCache from "../utils/redis.js";
 
 const { sign, verify } = jwt;
 
 class TokenService {
 
-    cache = redis.tokenCache;
+    cache = getCache("tokens");
     database = new PrismaClient();
     secrets = {
         REFRESH_TOKEN: process.env.JWT_REFRESH_KEY || "@!@ Awesome key for refresh token #!/",

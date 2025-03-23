@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
-import redis from "../utils/redis.js";
 import { hashPassword } from "../middlewares/hashPassword.js";
+import getCache from "../utils/redis.js";
 
 class MemberService {
-    cache = redis.userCache;
+    cache = getCache("user");
     database = new PrismaClient().$extends(hashPassword);
 
     /* Create user in database and cache */
@@ -53,7 +53,7 @@ class MemberService {
         return user;
     }
 
-    /* 
+    /*
         REDIS CACHE
      */
     // Get user from redis cache by id.

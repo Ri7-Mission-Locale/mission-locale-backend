@@ -11,9 +11,9 @@ const ACCESS_TOKEN_KEY = process.env.JWT_TOKEN_KEY || "Awesome key";
  * @param {Response} res - Response HTTP
  * @param {NextFunction} next - Next stage of the request
  */
+
 async function authguard(req, res, next) {
     const token = req.headers['authorization']?.split(' ')[1];
-    
     try {
         if (!token) throw {message: "No access token found"};
 
