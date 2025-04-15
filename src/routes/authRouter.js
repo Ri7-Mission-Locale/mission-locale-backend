@@ -5,10 +5,12 @@ import TokenRepository from "../repositories/TokenRepository";
 import { loginValidator, registerValidator } from "../validators/userValidator";
 import { compare } from "bcrypt";
 import { cookieOptions } from "../utils/cookieOptions";
+import { decode } from "jsonwebtoken";
 
 
 const userRepository = UserRepository;
 const tokenRepository = TokenRepository;
+const REFRESH_TOKEN_KEY = process.env.JWT_REFRESH_KEY;
 
 const authRouter = express.Router()
 
@@ -25,7 +27,6 @@ const authRouter = express.Router()
             res.status(301).json(err);
         }
     })
-
 
     .post("/auth/login", async (req, res) => {
         try {
@@ -52,15 +53,43 @@ const authRouter = express.Router()
     })
 
     .post("/auth/refresh", async (req, res) => {
-        
+        let accessToken = req.headers['authorization']?.split(' ')[1];
+        const refreshToken = req.cookies.refresh;
+
+        try {
+            if (!accessToken || !refreshToken) throw { message: "Unauthorized" };
+            const data = verify(refreshToken, REFRESH_TOKEN_KEY);
+            if (!data) throw { message: "Unauthorized" };
+
+            const user = tokenRepository.find(data.key);
+            if (!user) throw { message: "Unauthorized" };
+
+            accessToken = await tokenRepository.generate(user.user_id, "ACCESS_TOKEN", 5 * 60 * 1000);
+            res.status(200).json({ token: accessToken })
+        } catch (err) {
+            res.status(401).json(err);
+        }
     })
 
     .post("/auth/logout", authguard, async (req, res) => {
+        const refreshToken = req.cookies.refresh;
 
-    })
+        try {
+            await tokenRepository.delete(decode(refreshToken).key);
+            res.status(200).json({ message: "bye" })
+
+        } catch (err) {
+            res.status(301).json(err);
+        }
+    }) 
 
     .post("/auth/force-logout", authguard, async (req, res) => {
-
+        try {
+            await tokenRepository.deleteAll(req.user.user_id);
+            res.status(200).json({ message: "bye" })
+        } catch (err) {
+            res.status(301).json(err);
+        }
     });
 
 export default authRouter;

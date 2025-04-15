@@ -21,10 +21,10 @@ async function authguard(req, res, next) {
         const data = verify(accessToken, ACCESS_TOKEN_KEY);
         if (!data) throw { message: "Unauthorized" };
 
-        const user = tokenRepository.find(data.token);
+        const user = await tokenRepository.find(data.key);
         if (!user) throw { message: "Unauthorized" };
 
-        req.user = user;
+        req.user = user.user;
         next();
     } catch (err) {
         return res.status(401).json({ message: err });
