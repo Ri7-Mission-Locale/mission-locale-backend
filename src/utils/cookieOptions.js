@@ -1,4 +1,4 @@
-const cookieOptions = {
+export const cookieOptions = {
     path: "/",
     domain: process.env.HOST,
     httpOnly: true, // Cant be used by a frontend script.

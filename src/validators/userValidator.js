@@ -28,4 +28,5 @@ export const registerValidator = yup.object({
 export const loginValidator = yup.object({
     email: yup.string().email("Email invalide").required("Email requis"),
     password: yup.string().required("Mot de passe requis"),
+    keep_connected: yup.boolean().default(false)
 });
