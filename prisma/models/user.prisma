@@ -3,17 +3,23 @@
  */
 model User {
     user_id  String       @id @unique @default(uuid())
+
+    first_name String
+    last_name  String
     email    String       @unique
     password String
+    phone      String  @db.Char(8)
+    home_phone String? @db.Char(8)
+    birth_date       DateTime
+    
     role     Role         @default(USER)
     verified Boolean      @default(false)
     token    Token[]
     document Document[]
     queue    QueueEntry[]
 
-    informations_id Int @unique
-    informations Informations @relation(references: [informations_id], fields: [informations_id])
-
+    informations_id Int? @unique
+    informations Informations? @relation(references: [informations_id], fields: [informations_id])
 
     rdv_advisor Appointment[] @relation("rdv_advisor") // RDV du conseillé
     rdv_member  Appointment[] @relation("rdv_member") // RDV de l'adhérent
