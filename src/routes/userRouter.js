@@ -15,9 +15,9 @@ const userRouter = express.Router()
         }
     })
 
-    .get("/users:/id", async (req, res) => {
+    .get("/users/:id", async (req, res) => {
         try {
-            const id = Number(req.params.id);
+            const id = req.params.id;
             const user = await userRepository.find(id);
             if (!user) throw "Utilisateur non trouvé";
             res.json(user);
@@ -28,8 +28,8 @@ const userRouter = express.Router()
 
     .patch("/users:/id", async (req, res) => {
         try {
-            const id = Number(req.params.id);
-            const user = await userRepository.update(id, "")
+            const id = req.params.id;
+            const user = await userRepository.update(id, ""); // TODO Update data
         } catch (err) {
             res.status(400).json(err);
         }
@@ -37,7 +37,7 @@ const userRouter = express.Router()
 
     .delete("/users:/id", async (req, res) => {
         try {
-            const id = Number(req.params.id);
+            const id = req.params.id;
             const user = await userRepository.delete(id);
             res.json(user);
         } catch (err) {

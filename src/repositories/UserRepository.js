@@ -11,7 +11,7 @@ class UserRepository {
 
     /* Find a specific user with id or mail */
     async find(idOrEmail) {
-        return await this.db.user.findUnique({ where: typeof idOrEmail === 'string' ? { email: idOrEmail } : { user_id: idOrEmail } });
+        return await this.db.user.findUnique({ where: idOrEmail.contains('@') ? { email: idOrEmail } : { user_id: idOrEmail } });
     }
 
     /* Find a list of user with optionnal filter */
