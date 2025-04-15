@@ -8,7 +8,7 @@ const userRouter = express.Router()
 
     .get("/users", authguard, adminguard, async (req, res) => {
         if (req.user.role === "USER") {
-            res.status(401).json({ message: "Unauthorized"});
+            res.status(401).json({ message: "Unauthorized" });
             return;
         }
         try {
@@ -35,6 +35,7 @@ const userRouter = express.Router()
         try {
             const id = req.params.id;
             const user = await userRepository.update(id, ""); // TODO Update data
+            res.json(user);
         } catch (err) {
             res.status(400).json(err);
         }
