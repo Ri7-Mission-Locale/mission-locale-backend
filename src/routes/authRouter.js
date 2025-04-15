@@ -5,7 +5,7 @@ import TokenRepository from "../repositories/TokenRepository";
 import { loginValidator, registerValidator } from "../validators/userValidator";
 import { compare } from "bcrypt";
 import { cookieOptions } from "../utils/cookieOptions";
-import { decode } from "jsonwebtoken";
+import { decode, verify } from "jsonwebtoken";
 
 
 const userRepository = UserRepository;
