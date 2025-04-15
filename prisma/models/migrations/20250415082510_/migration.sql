@@ -1,9 +1,27 @@
 -- CreateTable
+CREATE TABLE `Appointment` (
+    `rdv_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(191) NOT NULL,
+    `content` VARCHAR(191) NOT NULL,
+    `type` ENUM('INSCRIPTION', 'OTHER') NOT NULL DEFAULT 'INSCRIPTION',
+    `date` DATETIME(3) NOT NULL,
+    `duration` DATETIME(3) NOT NULL,
+    `state` ENUM('PENDING', 'VALIDATED', 'CANCELLED', 'MISSED', 'COMPLETED') NOT NULL DEFAULT 'PENDING',
+    `advisor_id` VARCHAR(191) NOT NULL,
+    `member_id` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Appointment_rdv_id_key`(`rdv_id`),
+    PRIMARY KEY (`rdv_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Document` (
     `document_id` INTEGER NOT NULL AUTO_INCREMENT,
     `type` ENUM('CNI', 'JUSTIFICATION_DOMICILE', 'PASSPORT', 'PERMIS_DE_CONDUIRE', 'OTHER') NOT NULL,
     `path` VARCHAR(191) NOT NULL,
-    `user_id` INTEGER NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -24,11 +42,39 @@ CREATE TABLE `Event` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Informations` (
+    `informations_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `gender` ENUM('M', 'MME') NOT NULL,
+    `first_name` VARCHAR(191) NOT NULL,
+    `last_name` VARCHAR(191) NOT NULL,
+    `phone` CHAR(8) NOT NULL,
+    `home_phone` CHAR(8) NULL,
+    `birth_date` DATETIME(3) NOT NULL,
+    `birth_city` VARCHAR(191) NOT NULL,
+    `family_situation` ENUM('SINGLE', 'MARRIED') NULL,
+    `marital_name` VARCHAR(191) NULL,
+    `childrens` INTEGER NOT NULL DEFAULT 0,
+    `home_number` INTEGER NULL,
+    `home_address` VARCHAR(191) NULL,
+    `home_postal_code` INTEGER NULL,
+    `home_municipality` VARCHAR(191) NULL,
+    `nationnality` ENUM('FR', 'CEE', 'HORS_CEE', 'JAPD', 'RECENSE') NULL,
+    `hosting` ENUM('AUTO', 'FAMILLY', 'FOYER', 'OTHER', 'PROBLEMS') NULL,
+    `driving_liscence` ENUM('NO', 'WAINTING', 'YES') NULL,
+    `transport` ENUM('NONE', 'AUTO', 'MOTO_OR_CYCLO') NULL,
+    `social_coverage` ENUM('NONE', 'MUTUELLE', 'RSA', 'SOCIAL_SECURITY', 'BENEFICIARIES', 'RIGHT_HOLDERS', 'CMU') NULL,
+    `ressources` ENUM('NONE', 'SALARIES', 'ARE_POLE_EMPLOI', 'RSA', 'OTHER') NULL,
+
+    UNIQUE INDEX `Informations_informations_id_key`(`informations_id`),
+    PRIMARY KEY (`informations_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Message` (
     `message_id` INTEGER NOT NULL AUTO_INCREMENT,
     `message` VARCHAR(191) NOT NULL,
-    `sender_id` INTEGER NOT NULL,
-    `receiver_id` INTEGER NOT NULL,
+    `sender_id` VARCHAR(191) NOT NULL,
+    `receiver_id` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Message_message_id_key`(`message_id`),
@@ -39,29 +85,11 @@ CREATE TABLE `Message` (
 CREATE TABLE `QueueEntry` (
     `queue_id` INTEGER NOT NULL AUTO_INCREMENT,
     `state` ENUM('REGISTERED', 'CANCELLED', 'PENDING') NOT NULL DEFAULT 'PENDING',
-    `user_id` INTEGER NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `event_id` INTEGER NOT NULL,
 
     UNIQUE INDEX `QueueEntry_queue_id_key`(`queue_id`),
     PRIMARY KEY (`queue_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `RDV` (
-    `rdv_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(191) NOT NULL,
-    `content` VARCHAR(191) NOT NULL,
-    `type` ENUM('INSCRIPTION', 'OTHER') NOT NULL DEFAULT 'INSCRIPTION',
-    `date` DATETIME(3) NOT NULL,
-    `duration` DATETIME(3) NOT NULL,
-    `state` ENUM('PENDING', 'VALIDATED', 'CANCELLED', 'MISSED', 'COMPLETED') NOT NULL DEFAULT 'PENDING',
-    `advisor_id` INTEGER NOT NULL,
-    `member_id` INTEGER NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-
-    UNIQUE INDEX `RDV_rdv_id_key`(`rdv_id`),
-    PRIMARY KEY (`rdv_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -78,9 +106,10 @@ CREATE TABLE `Tag` (
 CREATE TABLE `Token` (
     `token_id` INTEGER NOT NULL AUTO_INCREMENT,
     `token` VARCHAR(191) NOT NULL,
+    `address` VARCHAR(191) NULL,
     `agent` VARCHAR(191) NULL,
     `type` ENUM('REFRESH_TOKEN', 'MAIL_VALIDATION') NOT NULL,
-    `user_id` INTEGER NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `expiresAt` DATETIME(3) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -92,22 +121,19 @@ CREATE TABLE `Token` (
 
 -- CreateTable
 CREATE TABLE `User` (
-    `user_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `firstName` VARCHAR(191) NOT NULL,
-    `lastName` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `phone` CHAR(8) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `birthDate` DATETIME(3) NOT NULL,
-    `genre` VARCHAR(191) NOT NULL,
     `role` ENUM('USER', 'ADVISOR', 'ADMIN') NOT NULL DEFAULT 'USER',
     `verified` BOOLEAN NOT NULL DEFAULT false,
-    `users_id` INTEGER NOT NULL,
+    `informations_id` INTEGER NOT NULL,
+    `users_id` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `User_user_id_key`(`user_id`),
     UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `User_informations_id_key`(`informations_id`),
     PRIMARY KEY (`user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -131,6 +157,12 @@ CREATE TABLE `_workshop_tags` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
+ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_advisor_id_fkey` FOREIGN KEY (`advisor_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_member_id_fkey` FOREIGN KEY (`member_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Document` ADD CONSTRAINT `Document_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -149,13 +181,10 @@ ALTER TABLE `QueueEntry` ADD CONSTRAINT `QueueEntry_user_id_fkey` FOREIGN KEY (`
 ALTER TABLE `QueueEntry` ADD CONSTRAINT `QueueEntry_event_id_fkey` FOREIGN KEY (`event_id`) REFERENCES `Event`(`event_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `RDV` ADD CONSTRAINT `RDV_advisor_id_fkey` FOREIGN KEY (`advisor_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `RDV` ADD CONSTRAINT `RDV_member_id_fkey` FOREIGN KEY (`member_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `Token` ADD CONSTRAINT `Token_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_informations_id_fkey` FOREIGN KEY (`informations_id`) REFERENCES `Informations`(`informations_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_users_id_fkey` FOREIGN KEY (`users_id`) REFERENCES `User`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;

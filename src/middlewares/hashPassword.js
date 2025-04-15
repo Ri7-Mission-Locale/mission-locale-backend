@@ -2,9 +2,9 @@ import { Prisma } from "@prisma/client";
 import { hashSync }  from "bcrypt";
 
 export const hashPassword = Prisma.defineExtension({
-    name: "hashPassword",
+    name: "hash",
     query: {
-        member: {
+        user: {
             create: async ({ args, query }) => {
                 const hash = hashSync(args.data.password, 10);
                 args.data.password = hash;

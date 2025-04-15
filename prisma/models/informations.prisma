@@ -1,5 +1,8 @@
+/**
+ * Informations supplementaire pour les utilisateurs
+ */
 model Informations {
-    information_id Int @id @unique @default(autoincrement())
+    informations_id Int @id @unique @default(autoincrement())
 
     gender     Gender
     first_name String
@@ -10,25 +13,24 @@ model Informations {
 
     birth_date       DateTime
     birth_city       String
-    family_situation Situation
+    family_situation Situation?
     marital_name     String?
-    childrens        Int       @default(0)
+    childrens        Int        @default(0)
 
-    home_number       Int
-    home_address      String
-    home_postal_code  Int
-    home_municipality String
+    home_number       Int?
+    home_address      String?
+    home_postal_code  Int?
+    home_municipality String?
 
-    nationnality     Nationnality
-    hosting          Hosting
-    driving_liscence DrivingLiscence
-    transport        Transport
-    social_coverage  SocialCoverage
-    ressources       Ressources
+    nationnality     Nationnality?
+    hosting          Hosting?
+    driving_liscence DrivingLiscence?
+    transport        Transport?
+    social_coverage  SocialCoverage?
+    ressources       Ressources?
 
     // TODO Diplome, emploies formations
-
-    description String?
+    User User?
 }
 
 enum Ressources {

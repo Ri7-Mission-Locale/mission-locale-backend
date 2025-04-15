@@ -1,0 +1,37 @@
+/**
+ * Table pour les utilisateurs
+ */
+model User {
+    user_id  String       @id @unique @default(uuid())
+    email    String       @unique
+    password String
+    role     Role         @default(USER)
+    verified Boolean      @default(false)
+    token    Token[]
+    document Document[]
+    queue    QueueEntry[]
+
+    informations_id Int @unique
+    informations Informations @relation(references: [informations_id], fields: [informations_id])
+
+
+    rdv_advisor Appointment[] @relation("rdv_advisor") // RDV du conseillé
+    rdv_member  Appointment[] @relation("rdv_member") // RDV de l'adhérent
+
+    received_messages Message[] @relation("receiver") // Messages reçus
+    sended_messages   Message[] @relation("sender") // Messages envoyés
+
+    // Liste des adhérents pour le conseillé et le conseillé pour l'adhérant
+    users_id String?
+    user     User[]  @relation("advisor")
+    advisor  User?   @relation("advisor", fields: [users_id], references: [user_id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+enum Role {
+    USER
+    ADVISOR
+    ADMIN
+}
