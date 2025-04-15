@@ -30,3 +30,11 @@ export const loginValidator = yup.object({
     password: yup.string().required("Mot de passe requis"),
     keep_connected: yup.boolean().default(false)
 });
+
+export const userFiltersValidator = yup.object({
+    limit: yup.number().min(5).max(50).default(10),
+    page: yup.number().min(1).default(1),
+    name: yup.string().trim(), 
+    role: yup.mixed().oneOf(["ADMIN", "ADVISOR", "USER"]).optional(),
+    order: yup.string().oneOf(["asc", "desc"]).default("asc"),
+});

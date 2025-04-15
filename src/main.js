@@ -1,9 +1,10 @@
+import "dotenv/config"
 import express from "express"
 import cors from "cors"
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
-
-import "dotenv/config"
+import authRouter from "./routes/authRouter";
+import userRouter from "./routes/userRouter";
 
 const port = process.env.PORT;
 
@@ -19,6 +20,9 @@ const app = express()
     .use(helmet())
     .use(express.json({ limit: "10mb" }))
     .use(express.urlencoded({ extended: true }))
+
+    .use(authRouter)
+    .use(userRouter)
 
     /*
     .use(counsellorRouter)

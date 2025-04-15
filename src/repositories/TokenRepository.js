@@ -17,6 +17,7 @@ class TokenRepository {
         if (tokenType !== "ACCESS_TOKEN") {
             await this.save(userId, tokenType, key, expiresIn);
         }
+
         return token;
     }
 
@@ -24,11 +25,13 @@ class TokenRepository {
     async delete(token) {
         return await this.db.token.deleteMany({ where: { token } })
     }
+
     /* Delete all user's token*/
     async deleteAll(userId) {
         return await this.db.token.deleteMany({ where: { user_id: userId } })
     }
 
+    /* Find token with user */
     async find(token) {
         return await this.db.token.findUnique({
             where: { token },
