@@ -1,11 +1,16 @@
 import express from "express";
 import UserRepository from "../repositories/UserRepository";
 import { userFiltersValidator } from "../validators/userValidator";
+import authguard from "../middlewares/authguard";
 
 const userRepository = UserRepository;
 const userRouter = express.Router()
 
-    .get("/users", async (req, res) => {
+    .get("/users", authguard, adminguard, async (req, res) => {
+        if (req.user.role === "USER") {
+            res.status(401).json({ message: "Unauthorized"});
+            return;
+        }
         try {
             const filters = await userFiltersValidator.validate(req.query, { stripUnknown: true });
             const users = await userRepository.findMany(filters);
@@ -15,7 +20,7 @@ const userRouter = express.Router()
         }
     })
 
-    .get("/users/:id", async (req, res) => {
+    .get("/users/:id", authguard, adminguard, async (req, res) => {
         try {
             const id = req.params.id;
             const user = await userRepository.find(id);
@@ -26,7 +31,7 @@ const userRouter = express.Router()
         }
     })
 
-    .patch("/users:/id", async (req, res) => {
+    .patch("/users:/id", authguard, adminguard, async (req, res) => {
         try {
             const id = req.params.id;
             const user = await userRepository.update(id, ""); // TODO Update data
@@ -35,7 +40,7 @@ const userRouter = express.Router()
         }
     })
 
-    .delete("/users:/id", async (req, res) => {
+    .delete("/users:/id", authguard, adminguard, async (req, res) => {
         try {
             const id = req.params.id;
             const user = await userRepository.delete(id);
