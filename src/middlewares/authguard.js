@@ -8,7 +8,8 @@ const ACCESS_TOKEN_KEY = process.env.JWT_ACCESS_KEY;
  * Middleware to check user's authentication.
  * @param {Request} req - Request HTTP
  * @param {Response} res - Response HTTP
- * @param {NextFunction} next - Next stage of the request */
+ * @param {NextFunction} next - Next stage of the request 
+ */
 const tokenRepository = TokenRepository;
 
 async function authguard(req, res, next) {

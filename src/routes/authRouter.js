@@ -74,7 +74,7 @@ const authRouter = express.Router()
 
         try {
             await tokenRepository.delete(decode(refreshToken).key);
-            res.json({ message: "bye" })
+            res.clearCookie("refresh").json({ message: "bye" });
 
         } catch (err) {
             res.status(301).json(err);
@@ -84,7 +84,7 @@ const authRouter = express.Router()
     .post("/auth/force-logout", authguard, async (req, res) => {
         try {
             await tokenRepository.deleteAll(req.user.user_id);
-            res.json({ message: "bye" })
+            res.clearCookie("refresh").json({ message: "bye" })
         } catch (err) {
             res.status(301).json(err);
         }

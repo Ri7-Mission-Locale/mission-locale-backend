@@ -1,6 +1,6 @@
 import express from "express";
 import UserRepository from "../repositories/UserRepository";
-import { userFiltersValidator } from "../validators/userValidator";
+import { updateValidator, userFiltersValidator } from "../validators/userValidator";
 import authguard from "../middlewares/authguard";
 
 const userRepository = UserRepository;
@@ -33,8 +33,9 @@ const userRouter = express.Router()
 
     .patch("/users:/id", authguard, adminguard, async (req, res) => {
         try {
+            const data = await updateValidator.validate(req.body, { abortEarly: false });
             const id = req.params.id;
-            const user = await userRepository.update(id, ""); // TODO Update data
+            const user = await userRepository.update(id, data);
             res.json(user);
         } catch (err) {
             res.status(400).json(err);
