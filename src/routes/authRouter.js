@@ -1,11 +1,11 @@
 import express from "express";
-import authguard from "../middlewares/authguard";
-import UserRepository from "../repositories/UserRepository";
-import TokenRepository from "../repositories/TokenRepository";
-import { loginValidator, registerValidator } from "../validators/userValidator";
+import authguard from "../middlewares/authguard.js";
+import UserRepository from "../repositories/UserRepository.js";
+import TokenRepository from "../repositories/TokenRepository.js";
+import { loginValidator, registerValidator } from "../validators/userValidator.js";
 import { compare } from "bcrypt";
-import { cookieOptions } from "../utils/cookieOptions";
-import { decode, verify } from "jsonwebtoken";
+import { cookieOptions } from "../utils/cookieOptions.js";
+import jwt from "jsonwebtoken";
 
 const userRepository = UserRepository;
 const tokenRepository = TokenRepository;
@@ -56,7 +56,7 @@ const authRouter = express.Router()
 
         try {
             if (!accessToken || !refreshToken) throw { message: "Unauthorized" };
-            const data = verify(refreshToken, REFRESH_TOKEN_KEY);
+            const data = jwt.verify(refreshToken, REFRESH_TOKEN_KEY);
             if (!data) throw { message: "Unauthorized" };
 
             const user = tokenRepository.find(data.key);

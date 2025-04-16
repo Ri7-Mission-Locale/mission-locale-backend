@@ -1,4 +1,4 @@
-import database from "../databases/database";
+import database from "../databases/database.js";
 
 class UserRepository {
 
@@ -24,7 +24,8 @@ class UserRepository {
                     OR: [
                         { first_name: { contains: name, mode: 'insensitive' } },
                         { last_name: { contains: name, mode: 'insensitive' } },
-                    ]} : undefined,
+                    ]
+                } : undefined,
                 ].filter(Boolean),
             },
             orderBy: { createdAt: order },

@@ -1,4 +1,4 @@
-import database from "../databases/database";
+import database from "../databases/database.js";
 
 class TokenRepository {
     db = database;
@@ -40,13 +40,13 @@ class TokenRepository {
     }
 
     /* Save token in database */
-    async save(userId, token, token, expiresIn) {
+    async save(userId, type, token, expiresIn) {
         const expiresAt = new Date(Date.now() + expiresIn * 1000);
 
         return await this.db.token.upsert({
             where: { token },
             update: { expiresAt },
-            create: { token, id_user: userId, expiresAt },
+            create: { token, id_user: userId, type, expiresAt },
         });
     }
 }

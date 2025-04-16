@@ -3,8 +3,8 @@ import express from "express"
 import cors from "cors"
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
-import authRouter from "./routes/authRouter";
-import userRouter from "./routes/userRouter";
+import authRouter from "./routes/authRouter.js";
+import userRouter from "./routes/userRouter.js";
 
 const port = process.env.PORT;
 
