@@ -4,10 +4,10 @@
 model Informations {
     informations_id Int @id @unique @default(autoincrement())
 
-    gender           Gender?
+    gender     Gender?
     family_situation Situation?
     marital_name     String?
-    childrens        Int?       @default(0)
+    childrens        Int?        @default(0)
     birth_city       String?
 
     home_number       Int?

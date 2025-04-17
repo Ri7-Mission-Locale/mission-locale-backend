@@ -1,20 +1,19 @@
 import jwt from 'jsonwebtoken';
 import express from 'express';
 const { Request, Response, NextFunction } = express;
-import TokenRepository from "../repositories/TokenRepository.js";
+import UserRepository from '../repositories/UserRepository.js';
 
 const ACCESS_TOKEN_KEY = process.env.JWT_ACCESS_KEY;
+const userRepository = UserRepository;
 
 /**
  * Middleware to check user's authentication.
- * @param {Request} req - Request HTTP
- * @param {Response} res - Response HTTP
+ * @param {import('express').Request} req - Request HTTP
+ * @param {import('express').Response} res - Response HTTP
  * @param {NextFunction} next - Next stage of the request 
  */
-const tokenRepository = TokenRepository;
-
 async function authguard(req, res, next) {
-    const accessToken = req.headers['authorization']?.split(' ')[1];
+    const accessToken = req.headers['authorization'].split(' ')[1];
     const refreshToken = req.cookies.refresh;
 
     try {
@@ -23,10 +22,10 @@ async function authguard(req, res, next) {
         const data = jwt.verify(accessToken, ACCESS_TOKEN_KEY);
         if (!data) throw { message: "Unauthorized" };
 
-        const user = await tokenRepository.find(data.key);
+        const user = await userRepository.find(data.key);
         if (!user) throw { message: "Unauthorized" };
 
-        req.user = user.user;
+        req.user = user;
         next();
     } catch (err) {
         return res.status(401).json({ message: err });

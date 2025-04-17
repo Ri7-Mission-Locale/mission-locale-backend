@@ -126,7 +126,7 @@ CREATE TABLE `User` (
     `birth_date` DATETIME(3) NOT NULL,
     `role` ENUM('USER', 'ADVISOR', 'ADMIN') NOT NULL DEFAULT 'USER',
     `verified` BOOLEAN NOT NULL DEFAULT false,
-    `informations_id` INTEGER NULL,
+    `informations_id` INTEGER NOT NULL,
     `users_id` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -184,7 +184,7 @@ ALTER TABLE `QueueEntry` ADD CONSTRAINT `QueueEntry_event_id_fkey` FOREIGN KEY (
 ALTER TABLE `Token` ADD CONSTRAINT `Token_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `User` ADD CONSTRAINT `User_informations_id_fkey` FOREIGN KEY (`informations_id`) REFERENCES `Informations`(`informations_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `User` ADD CONSTRAINT `User_informations_id_fkey` FOREIGN KEY (`informations_id`) REFERENCES `Informations`(`informations_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_users_id_fkey` FOREIGN KEY (`users_id`) REFERENCES `User`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;

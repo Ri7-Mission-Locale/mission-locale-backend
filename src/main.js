@@ -5,6 +5,7 @@ import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
+import cookieParser from "cookie-parser";
 
 const port = process.env.PORT;
 
@@ -19,18 +20,11 @@ const app = express()
     }))
     .use(helmet())
     .use(express.json({ limit: "10mb" }))
+    .use(cookieParser())
     .use(express.urlencoded({ extended: true }))
 
     .use(authRouter)
     .use(userRouter)
-
-    /*
-    .use(counsellorRouter)
-    .use(workshopRouter)
-    .use(meetingRouter)
-    .use(counsellorRouter)
-    .use(memberRouter)
-    */
 
     .use((_, res) => res.status(404).json({ message: "Route not found" }))
     .listen(port, (err) => {
