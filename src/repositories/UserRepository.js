@@ -16,7 +16,6 @@ class UserRepository {
     }
 
     /* Find a specific user with id or mail */
-    /** @param {string} idOrEmail  */
     async find(idOrEmail) {
         try {
             return await this.db.user.findUnique({
@@ -26,7 +25,6 @@ class UserRepository {
             console.error(err);
             return null;
         }
-
     }
 
     /* Find a list of user with optionnal filter */

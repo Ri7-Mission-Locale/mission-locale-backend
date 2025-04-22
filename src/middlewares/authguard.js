@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import express from 'express';
-const { Request, Response, NextFunction } = express;
+const { NextFunction } = express;
 import UserRepository from '../repositories/UserRepository.js';
 
 const ACCESS_TOKEN_KEY = process.env.JWT_ACCESS_KEY;
