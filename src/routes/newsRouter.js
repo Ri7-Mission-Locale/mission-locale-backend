@@ -2,11 +2,9 @@ import express from "express";
 import NewsRepository from "../repositories/NewsRepository.js";
 import authguard from "../middlewares/authguard.js";
 import adminguard from "../middlewares/adminguard.js";
-import { log } from "console";
 
 const newsRepository = NewsRepository;
-const newsRouter = express
-  .Router()
+const newsRouter = express.Router()
 
   .get("/news", async (req, res) => {
     try {
@@ -19,6 +17,7 @@ const newsRouter = express
 
   .post("/news", async (req, res) => {
     try {
+      
       const news = await newsRepository.create(req.body);
       res.json(news);
     } catch (err) {

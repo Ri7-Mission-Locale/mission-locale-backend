@@ -23,7 +23,6 @@ const app = express()
     .use(express.json({ limit: "10mb" }))
     .use(cookieParser())
     .use(express.urlencoded({ extended: true }))
-
     .use(authRouter)
     .use(userRouter)
     .use(newsRouter)

@@ -32,4 +32,4 @@ const profileRouter = express.Router()
         
     })
 
-export default profileRouter;
+export default profileRouter;post
