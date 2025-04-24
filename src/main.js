@@ -1,32 +1,36 @@
+import "dotenv/config"
 import express from "express"
 import cors from "cors"
-import workshopRouter from "./routes/workshopRouter.js";
-import meetingRouter from "./routes/meetingRouter.js";
-import counsellorRouter from "./routes/counsellorRouter.js";
-import memberRouter from "./routes/memberRouter.js";
+import { rateLimit } from "express-rate-limit";
+import helmet from "helmet";
+import authRouter from "./routes/authRouter.js";
+import userRouter from "./routes/userRouter.js";
+import newsRouter from "./routes/newsRouter.js";
+import cookieParser from "cookie-parser";
 
+const port = process.env.PORT;
 
-const port = process.env.NODE_PORT || 3000;
-const app = express();
+const app = express()
+    .use(cors())
+    .use(rateLimit({
+        windowMs: 10 * 60 * 1000,
+        max: 250,
+        standardHeaders: true,
+        legacyHeaders: false,
+        message: "Too many request.",
+    }))
+    .use(helmet())
+    .use(express.json({ limit: "10mb" }))
+    .use(cookieParser())
+    .use(express.urlencoded({ extended: true }))
 
-app.use(cors());
-app.use(express.json());
+    .use(authRouter)
+    .use(userRouter)
+    .use(newsRouter)
+    .use((_, res) => res.status(404).json({ message: "Route not found" }))
+    .listen(port, (err) => {
+        if (err) return console.error(err);
+        console.log(`Listen at port ${port}`)
+    });
 
-app.use(counsellorRouter);
-
-app.use(workshopRouter)
-app.use(meetingRouter)
-
-
-
-
-
-
-
-
-app.use(memberRouter);
-
-app.listen(port, (err) => {
-    if (err) return console.error(err);
-    console.log(`Listen at port ${port}`)
-})
+export default app;
