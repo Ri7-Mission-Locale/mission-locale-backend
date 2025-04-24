@@ -36,8 +36,6 @@ const userRouter = express.Router()
     .patch("/users/:id", authguard, adminguard, async (req, res) => {
         try {
             const data = await updateValidator.validate(req.body, { abortEarly: false });
-        
-            
             const id = req.params.id;
             const user = await userRepository.update(id, data);
             res.json(user);
