@@ -23,9 +23,11 @@ const app = express()
     .use(express.json({ limit: "10mb" }))
     .use(cookieParser())
     .use(express.urlencoded({ extended: true }))
+    
     .use(authRouter)
     .use(userRouter)
     .use(newsRouter)
+
     .use((_, res) => res.status(404).json({ message: "Route not found" }))
     .listen(port, (err) => {
         if (err) return console.error(err);

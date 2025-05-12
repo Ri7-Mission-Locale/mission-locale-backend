@@ -10,7 +10,7 @@ class UserRepository {
             return await this.db.user.create({ data });
         } catch (err) {
             console.error(err)
-            return null;
+            throw err;
         }
 
     }
