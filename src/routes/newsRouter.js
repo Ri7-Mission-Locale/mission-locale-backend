@@ -18,7 +18,7 @@ const newsRouter = express.Router()
   .post("/news", async (req, res) => {
     try {
       
-      const news = await newsRepository.create(req.body);
+      const news = await newsRepository.create(req.body, req.user);
       res.json(news);
     } catch (err) {
       res.status(400).json(err);
