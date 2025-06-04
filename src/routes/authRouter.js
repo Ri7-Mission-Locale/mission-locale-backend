@@ -74,7 +74,6 @@ const authRouter = express.Router()
         try {
             await tokenRepository.delete(decode(refreshToken).key);
             res.clearCookie("refresh").json({ message: "bye" });
-
         } catch (err) {
             res.status(301).json(err);
         }

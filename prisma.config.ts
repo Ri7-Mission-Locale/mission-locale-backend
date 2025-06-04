@@ -1,3 +1,4 @@
+// @ts-ignore
 import path from 'path'
 import { PrismaConfig } from 'prisma/config'
 import "dotenv/config"

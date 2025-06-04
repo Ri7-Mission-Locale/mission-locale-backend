@@ -25,7 +25,7 @@ async function authguard(req, res, next) {
         if (!user) throw { message: "Unauthorized" };
 
         req.user = user;
-        next();
+        return next();
     } catch (err) {
         return res.status(401).json({ message: err });
     }

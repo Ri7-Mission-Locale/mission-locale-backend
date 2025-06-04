@@ -7,12 +7,7 @@ import adminguard from "../middlewares/adminguard.js";
 const userRepository = UserRepository;
 const userRouter = express.Router()
 
-    // TODO NEED TESTING
     .get("/users", authguard, adminguard, async (req, res) => {
-        if (req.user.role === "USER") {
-            res.status(401).json({ message: "Unauthorized" });
-            return;
-        }
         try {
             const filters = await userFiltersValidator.validate(req.query, { stripUnknown: true });
             const users = await userRepository.findMany(filters);
