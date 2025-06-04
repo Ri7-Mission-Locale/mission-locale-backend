@@ -6,6 +6,7 @@
   "main": "src/main.js",
   "type": "module",
   "scripts": {
+    "init": "npm i && npx prisma generate",
     "migrate": "npx prisma migrate dev",
     "dev": "nodemon",
     "build": "echo soon"
