@@ -21,6 +21,7 @@ Partie backend du projet de l'application web de la Mission Locale du Pays d'Aub
 Liste des commandes pour initialiser et utiliser le projet:
 
 **Clonez le projet**, executez: ```npm run init```,<br />
+Créer le fichier ```.env``` (en prennant pour exemple ```exemple.env```) et configurer le, <br />
 En cas de **modification des models prisma** executez: ```npm run migrate```.
 
 ## 👥 Utilisateurs
