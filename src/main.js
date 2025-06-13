@@ -11,7 +11,10 @@ import cookieParser from "cookie-parser";
 const port = process.env.PORT;
 
 const app = express()
-    .use(cors())
+    .use(cors({
+        origin: 'http://localhost:5173',
+        credentials: true    
+    }))
     .use(rateLimit({
         windowMs: 10 * 60 * 1000,
         max: 250,
@@ -23,7 +26,7 @@ const app = express()
     .use(express.json({ limit: "10mb" }))
     .use(cookieParser())
     .use(express.urlencoded({ extended: true }))
-    
+
     .use(authRouter)
     .use(userRouter)
     .use(newsRouter)
