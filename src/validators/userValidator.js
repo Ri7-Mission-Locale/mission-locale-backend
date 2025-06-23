@@ -9,7 +9,7 @@ export const registerValidator = yup.object({
     email: yup.string().email("Email invalide").required("Email requis"),
     phone: yup
         .string()
-        .matches(/^\d{8}$/, "Le numéro de téléphone doit contenir 8 chiffres")
+        .matches(/^\d{10}$/, "Le numéro de téléphone doit contenir 10 chiffres")
         .required("Téléphone requis"),
     birth_date: yup
         .date()
@@ -35,7 +35,7 @@ export const updateUserValidator = yup.object({
     email: yup.string().email("Email invalide"),
     phone: yup
         .string()
-        .matches(/^\d{8}$/, "Le numéro de téléphone doit contenir 8 chiffres"),
+        .matches(/^\d{10}$/, "Le numéro de téléphone doit contenir 10 chiffres"),
     birth_date: yup
         .date()
         .min(minDate, "L'utilisateur ne doit pas avoir plus de 25 ans")
@@ -69,7 +69,7 @@ export const updateValidator = yup.object({
     email: yup.string().email("Email invalide"),
     phone: yup
         .string()
-        .matches(/^\d{8}$/, "Le numéro de téléphone doit contenir 8 chiffres"),
+        .matches(/^\d{10}$/, "Le numéro de téléphone doit contenir 10 chiffres"),
     birth_date: yup
         .date()
         .min(minDate, "L'utilisateur ne doit pas avoir plus de 25 ans")

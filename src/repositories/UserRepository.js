@@ -9,7 +9,7 @@ class UserRepository {
             return await this.db.user.create({ data });
         } catch (err) {
             console.error(err)
-            throw err;
+            return { error: err };
         }
     }
 
