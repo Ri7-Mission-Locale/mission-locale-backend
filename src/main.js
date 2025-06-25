@@ -6,14 +6,16 @@ import helmet from "helmet";
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
 import newsRouter from "./routes/newsRouter.js";
+import microsoftRouter from "./routes/microsoftRouter.js";
 import cookieParser from "cookie-parser";
+
 
 const port = process.env.PORT;
 
 const app = express()
     .use(cors({
         origin: 'http://localhost:5173',
-        credentials: true    
+        credentials: true
     }))
     .use(rateLimit({
         windowMs: 10 * 60 * 1000,
@@ -30,8 +32,9 @@ const app = express()
     .use(authRouter)
     .use(userRouter)
     .use(newsRouter)
+    .use(microsoftRouter)
 
-    .use((_, res) => res.status(404).json({ message: "Route not found" }))
+    .use((_, res) => setTimeout(() => res.status(404).json({ message: "Route not found" }), 3000))
     .listen(port, (err) => {
         if (err) return console.error(err);
         console.log(`Listen at port ${port}`)
