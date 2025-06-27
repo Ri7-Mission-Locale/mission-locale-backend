@@ -6,6 +6,7 @@ class NewsRepository {
     /* Create news */
     async create(data, userId) {
         try {
+            
             return await this.db.news.create({
                 data: {
                     user_id: userId,
@@ -19,7 +20,6 @@ class NewsRepository {
     }
 
     /* Find a list of news with optionnal filter */
-
     //J'ai du enlver mode : "insensitive" pour pouvoir faire tourner la requête correctement
     async findMany(filter = {}) {
         const {limit = 10, page = 1, name, order = "asc"} = filter;
@@ -37,6 +37,9 @@ class NewsRepository {
                 orderBy: {createdAt: order},
                 skip: (page - 1) * limit,
                 take: limit,
+                include: {
+        tag: true,
+      }
             });
         } catch (err) {
             console.error(err);
@@ -49,6 +52,9 @@ class NewsRepository {
         try {
             return await this.db.news.findUnique({
                 where: {news_id},
+                include: {
+        tag: true,
+      }
             });
         } catch (err) {
             console.error(err);

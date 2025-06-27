@@ -1,5 +1,5 @@
 import express from "express";
-import NewsRepository from "../repositories/NewsRepository.js";
+import NewsRepository from "../repositories/newsRepository.js";
 import authguard from "../middlewares/authguard.js";
 import adminguard from "../middlewares/adminguard.js";
 
@@ -17,8 +17,8 @@ const newsRouter = express.Router()
 
   .post("/news", async (req, res) => {
     try {
-      
-      const news = await newsRepository.create(req.body, req.user);
+       const userId = "db19a8d5-378e-4985-ac8c-c74230e5ad00"
+      const news = await newsRepository.create(req.body, userId);
       res.json(news);
     } catch (err) {
       res.status(400).json(err);
