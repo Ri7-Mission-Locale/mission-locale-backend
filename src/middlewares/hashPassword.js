@@ -1,17 +1,19 @@
-import {Prisma} from "@prisma/client";
-import {hashSync} from "bcrypt";
+import { Prisma } from "@prisma/client";
+import { hash } from "bcrypt";
 
 export const hashPassword = Prisma.defineExtension({
     name: "hash",
     query: {
         user: {
             create: async ({ args, query }) => {
-                args.data.password = hashSync(args.data.password, 10);
+                const password = args.data.password;
+                args.data.password = await hash(password, 10);
                 return query(args);
             },
             update: async ({ args, query }) => {
-                if (!args.data.password || typeof args.data.password !== 'string') return query(args);
-                args.data.password = hashSync(args.data.password, 10);
+                const password = args.data.password;
+                if (!password || typeof password !== 'string') return query(args);
+                args.data.password = await hash(password, 10);
                 return query(args);
             },
         }

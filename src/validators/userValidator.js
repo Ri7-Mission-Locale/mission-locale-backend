@@ -3,7 +3,7 @@ import * as yup from 'yup';
 const today = new Date();
 const minDate = new Date(today.getFullYear() - 25, today.getMonth(), today.getDate());
 
-export const registerValidator = yup.object({
+export const registerValidator = yup.mixed({
     first_name: yup.string().required("Prénom requis"),
     last_name: yup.string().required("Nom requis"),
     email: yup.string().email("Email invalide").required("Email requis"),
@@ -27,6 +27,8 @@ export const registerValidator = yup.object({
         .string()
         .oneOf([yup.ref('password')], "Les mots de passe ne correspondent pas")
         .required("Confirmation du mot de passe requise"),
+    date: yup.string().optional(),
+    file: yup.mixed().optional()
 });
 
 export const updateUserValidator = yup.object({
