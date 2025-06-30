@@ -27,6 +27,7 @@ const app = express()
     .use(helmet())
     .use(express.json({ limit: "10mb" }))
     .use(cookieParser())
+    .use(express.static('public'))
     .use(express.urlencoded({ extended: true }))
 
     .use(authRouter)

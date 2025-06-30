@@ -43,7 +43,6 @@ class MicrosoftService {
         return this.callendarId;
     }
 
-
     async getEvents() {
         const id = await this.getCallendarId();
         return await this.client
@@ -52,8 +51,5 @@ class MicrosoftService {
             .get();
     }
 }
-
-
-
 
 export default new MicrosoftService;
