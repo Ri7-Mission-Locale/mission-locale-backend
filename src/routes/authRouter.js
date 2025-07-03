@@ -25,9 +25,17 @@ const authRouter = express
       });
 
       delete validatedData.confirm_password;
+      let date;
+      if (validatedData.date) date = new Date(validatedData.date);
+      
+      delete validatedData.date;
 
       const data = await userRepository.create(validatedData);
       if (data.error) throw { error: data.error };
+
+      if (date) {
+        // Create rdv
+      }
       // TODO send validation mail
 
       // TODO create user folder and store uploaded files if sent

@@ -8,9 +8,10 @@ const microsoftRouter = express.Router()
             callendars: await microsoft.getCallendars()
         })
     })
-    .get("/test", async (req, res) => {
+    .get("/appointements", async (req, res) => {
+        const { start, end, duration } = req.query;
         return res.json({
-            callendars: await microsoft.getEvents()
+            data: await microsoft.getSchedule(start, end, duration)
         })
     })
 export default microsoftRouter;

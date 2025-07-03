@@ -13,15 +13,13 @@ class MicrosoftService {
     callendarId;
 
     constructor() {
-
         const clientSecret = new ClientSecretCredential(
             this.tenantId,
             this.clientId,
             this.clientSecret,
         )
         const authProvider = new TokenCredentialAuthenticationProvider(
-            clientSecret,
-            {
+            clientSecret, {
                 scopes: ['https://graph.microsoft.com/.default'],
             },
         );
@@ -32,6 +30,7 @@ class MicrosoftService {
     async getCallendars() {
         return await this.client
             .api(`/users/${this.microsoftAccount}/calendars`)
+            .header("Prefer", 'outlook.timezone="Europe/Paris"')
             .top(10)
             .get()
     }
@@ -47,8 +46,25 @@ class MicrosoftService {
         const id = await this.getCallendarId();
         return await this.client
             .api(`/users/${this.microsoftAccount}/calendars/${id}/events`)
+            .header("Prefer", 'outlook.timezone="Europe/Paris"')
             .top(10)
             .get();
+    }
+
+    async getSchedule(start, end, duration = 60) {
+        const id = await this.getCallendarId();
+        return await this.client
+            .api(`/users/${this.microsoftAccount}/calendars/${id}/getSchedule`)
+            .header("Prefer", 'outlook.timezone="Europe/Paris"')
+            .post({
+                startDateTime: {
+                    dateTime: start.toISOString(),
+                },
+                endDateTime: {
+                    dateTime: end.toISOString(),
+                },
+                availabilityViewInterval: duration,
+            });
     }
 }
 
