@@ -8,6 +8,7 @@ import userRouter from "./routes/userRouter.js";
 import newsRouter from "./routes/newsRouter.js";
 import microsoftRouter from "./routes/microsoftRouter.js";
 import cookieParser from "cookie-parser";
+import file from "./middlewares/parseFile.js";
 
 
 const port = process.env.PORT;
@@ -25,10 +26,10 @@ const app = express()
         message: "Too many request.",
     }))
     .use(helmet())
-    .use(express.json({ limit: "10mb" }))
     .use(cookieParser())
     .use(express.static('public'))
     .use(express.urlencoded({ extended: true }))
+    .use(express.json({ limit: "10mb" }))
 
     .use(authRouter)
     .use(userRouter)

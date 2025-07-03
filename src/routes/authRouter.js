@@ -9,6 +9,8 @@ import {
 import { compare } from "bcrypt";
 import { cookieOptions } from "../utils/cookieOptions.js";
 import jwt from "jsonwebtoken";
+import parseFile from "../middlewares/parseFile.js";
+
 
 const userRepository = UserRepository;
 const tokenRepository = TokenRepository;
@@ -16,19 +18,23 @@ const REFRESH_TOKEN_KEY = process.env.JWT_REFRESH_KEY;
 const authRouter = express
   .Router()
 
-  .post("/auth/register", async (req, res) => {
+  .post("/auth/register", parseFile, async (req, res) => {
     try {
       const validatedData = await registerValidator.validate(req.body, {
         abortEarly: false,
       });
+
       delete validatedData.confirm_password;
+
       const data = await userRepository.create(validatedData);
       if (data.error) throw { error: data.error };
       // TODO send validation mail
 
+      // TODO create user folder and store uploaded files if sent
+
       res.json({ message: "ok" });
     } catch (err) {
-      res.status(400).json(err);
+      res.status(500).json({ error: err });
     }
   })
 
@@ -65,7 +71,7 @@ const authRouter = express
         })
         .json({ token: accessToken });
     } catch (err) {
-      res.status(400).json(err);
+      res.status(400).json({ error: err });
     }
   })
 
@@ -89,18 +95,18 @@ const authRouter = express
       );
       res.json({ token: accessToken });
     } catch (err) {
-      res.status(401).json(err);
+      res.status(400).json({ error: err });
     }
   })
 
   .get("/auth/logout", authguard, async (req, res) => {
     const refreshToken = req.cookies.refresh;
-    
+
     try {
       if (refreshToken) await tokenRepository.delete(decode(refreshToken).key);
       res.clearCookie("refresh").json({ message: "bye" });
     } catch (err) {
-      res.status(301).json(err);
+      res.status(400).json({ error: err });
     }
   })
 
@@ -109,7 +115,7 @@ const authRouter = express
       await tokenRepository.deleteAll(req.user.user_id);
       res.clearCookie("refresh").json({ message: "bye" });
     } catch (err) {
-      res.status(301).json(err);
+      res.status(400).json({ error: err });
     }
   });
 
