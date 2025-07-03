@@ -20,8 +20,8 @@ class MicrosoftService {
         )
         const authProvider = new TokenCredentialAuthenticationProvider(
             clientSecret, {
-                scopes: ['https://graph.microsoft.com/.default'],
-            },
+            scopes: ['https://graph.microsoft.com/.default'],
+        },
         );
 
         this.client = Client.initWithMiddleware({ authProvider })
@@ -55,13 +55,15 @@ class MicrosoftService {
         const id = await this.getCallendarId();
         return await this.client
             .api(`/users/${this.microsoftAccount}/calendars/${id}/getSchedule`)
-            .header("Prefer", 'outlook.timezone="Europe/Paris"')
             .post({
-                startDateTime: {
+                schedules: [this.microsoftAccount],
+                startTime: {
                     dateTime: start.toISOString(),
+                    timeZone: 'Europe/Paris',
                 },
-                endDateTime: {
+                endTime: {
                     dateTime: end.toISOString(),
+                    timeZone: 'Europe/Paris',
                 },
                 availabilityViewInterval: duration,
             });

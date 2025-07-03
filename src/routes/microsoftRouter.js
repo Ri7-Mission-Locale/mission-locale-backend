@@ -8,10 +8,36 @@ const microsoftRouter = express.Router()
             callendars: await microsoft.getCallendars()
         })
     })
-    .get("/appointements", async (req, res) => {
+    .get("/free-appointments", async (req, res) => {
         const { start, end, duration } = req.query;
-        return res.json({
-            data: await microsoft.getSchedule(start, end, duration)
-        })
+        if (!start || !end || !duration) {
+            return res.status(400).json({ error: "Missing parameters." });
+        }
+
+        try {
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+            const response = await microsoft.getSchedule(startDate, endDate, duration)
+            console.log(response);
+
+            const view = response.value[0]?.availabilityView;
+            if (!view) return res.status(500).json({ error: "No availability data." });
+
+            const availableSlots = [];
+            for (let i = 0; i < view.length; i++) {
+                if (view[i] === "0") {
+                    const slotStart = new Date(startDate.getTime() + i * duration * 60 * 1000);
+                    availableSlots.push({
+                        date: slotStart.toISOString().split("T")[0],
+                        hour: slotStart.toTimeString().slice(0, 5)
+                    });
+                }
+            }
+
+            return res.json({ data: availableSlots });
+        } catch (err) {
+            console.error("Error in /free-appointment:", err);
+            return res.status(500).json({ error: "Internal error" });
+        }
     })
 export default microsoftRouter;
