@@ -4,11 +4,8 @@ class NewsRepository {
   db = database;
 
   /* Create news */
-
   async create(data, userId) {
     try {
-        console.log("Tags reçus côté backend :", data.tags);
-
       return await this.db.news.create({
         data: {
           title: data.title,
