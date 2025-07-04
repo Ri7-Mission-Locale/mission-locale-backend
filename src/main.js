@@ -7,6 +7,7 @@ import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
 import newsRouter from "./routes/newsRouter.js";
 import cookieParser from "cookie-parser";
+import tagRouter from "./routes/tagRouter.js";
 
 const port = process.env.PORT;
 
@@ -30,6 +31,8 @@ const app = express()
     .use(authRouter)
     .use(userRouter)
     .use(newsRouter)
+    .use(tagRouter)
+
 
     .use((_, res) => res.status(404).json({ message: "Route not found" }))
     .listen(port, (err) => {

@@ -1,7 +1,7 @@
 model News {
   news_id     Int      @id @unique @default(autoincrement())
   title       String
-  description String
+  description String  @db.Text
   imagePath   String
   tag         Tag[]    @relation("news_tags")
   createdAt   DateTime @default(now())
