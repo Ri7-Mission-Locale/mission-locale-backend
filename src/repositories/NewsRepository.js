@@ -11,7 +11,7 @@ class NewsRepository {
           title: data.title,
           description: data.description,
           imagePath: data.imagePath,
-          user_id: "de0e81f0-53af-4812-bb4f-ea9066a62bce",
+          user_id: userId,
           tag: {
             connect: data.tags.map((tagName) => ({ tag_name: tagName })),
           },
