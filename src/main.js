@@ -9,6 +9,7 @@ import newsRouter from "./routes/newsRouter.js";
 import microsoftRouter from "./routes/microsoftRouter.js";
 import cookieParser from "cookie-parser";
 import file from "./middlewares/parseFile.js";
+import profileRouter from "./routes/profileRouter.js";
 
 
 const port = process.env.PORT;
@@ -33,6 +34,7 @@ const app = express()
 
     .use(authRouter)
     .use(userRouter)
+    .use(profileRouter)
     .use(newsRouter)
     .use(microsoftRouter)
 

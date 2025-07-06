@@ -4,14 +4,14 @@ import { updateUserValidator } from "../validators/userValidator.js";
 import UserRepository from "../repositories/UserRepository.js";
 
 const userRepository = UserRepository;
-const profileRouter = express
-  .Router()
+const profileRouter = express.Router()
 
   .get("/profile", authguard, async (req, res) => {
     const user = req.user;
     if (user) {
       delete user.password;
       delete user.user_id;
+      
       res.json(req.user);
     } else {
       res.status(301).json({ message: "User not found" });

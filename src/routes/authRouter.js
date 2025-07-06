@@ -27,7 +27,7 @@ const authRouter = express
       delete validatedData.confirm_password;
       let date;
       if (validatedData.date) date = new Date(validatedData.date);
-      
+
       delete validatedData.date;
 
       const data = await userRepository.create(validatedData);
@@ -55,7 +55,7 @@ const authRouter = express
 
       if (!user) throw { error: "Addresse email incorrecte" };
       if (!(await compare(validatedData.password, user.password)))
-        throw "Mot de passe incorrecte";
+        throw { error: "Mot de passe incorrecte" };
 
       const accessToken = await tokenRepository.generate(
         user.user_id,
@@ -77,7 +77,7 @@ const authRouter = express
           expires: new Date(Date.now() + expiration),
           ...cookieOptions,
         })
-        .json({ token: accessToken });
+        .json({ token: accessToken, role: user.role });
     } catch (err) {
       res.status(400).json({ error: err });
     }
