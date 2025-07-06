@@ -111,7 +111,7 @@ const authRouter = express
     const refreshToken = req.cookies.refresh;
 
     try {
-      if (refreshToken) await tokenRepository.delete(decode(refreshToken).key);
+      if (refreshToken) await tokenRepository.delete(jwt.decode(refreshToken).key);
       res.clearCookie("refresh").json({ message: "bye" });
     } catch (err) {
       res.status(400).json({ error: err });
