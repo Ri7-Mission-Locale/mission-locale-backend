@@ -2,6 +2,7 @@
 import express from "express";
 import WorkshopRepository from "../repositories/WorkshopRepository.js";
 import { log } from "node:console";
+import { uploadWorkshopImage } from "../middlewares/multer.js";
 
 const workshopRepository = WorkshopRepository;
 const workshopRouter = express.Router()
@@ -27,9 +28,9 @@ const workshopRouter = express.Router()
     })
 
 
-    .post("/workshops", async (req, res) => {
+    .post("/workshops", uploadWorkshopImage, async (req, res) => {
         try {
-            console.log(req.body);
+
             const workshopData = {
                 title: req.body.title,
                 description: req.body.description,
@@ -40,6 +41,11 @@ const workshopRouter = express.Router()
                 size: parseInt(req.body.size),
                 duration: req.body.duration,
             }
+
+            if (req.file) {
+                workshopData.imagePath = req.file.path;
+            }
+            console.log(workshopData);
 
             const workshop = await workshopRepository.createWithEvent(workshopData, eventData);
             res.json(workshop);

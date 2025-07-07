@@ -32,7 +32,8 @@ model User {
     user     User[]  @relation("advisor")
     advisor  User?   @relation("advisor", fields: [users_id], references: [user_id], onDelete: Cascade)
 
-    news    News[] //Liste des actualités rédigé par un conseiller
+    news                News[] //Liste des actualités rédigé par un conseiller
+    inscriptionFilePath String? @db.VarChar(255) // Chemin du fichier d'inscription
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

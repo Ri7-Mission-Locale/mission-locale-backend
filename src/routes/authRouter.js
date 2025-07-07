@@ -9,8 +9,7 @@ import {
 import { compare } from "bcrypt";
 import { cookieOptions } from "../utils/cookieOptions.js";
 import jwt from "jsonwebtoken";
-import parseFile from "../middlewares/parseFile.js";
-
+import { uploadRegister } from "../middlewares/multer.js";
 
 const userRepository = UserRepository;
 const tokenRepository = TokenRepository;
@@ -18,27 +17,22 @@ const REFRESH_TOKEN_KEY = process.env.JWT_REFRESH_KEY;
 const authRouter = express
   .Router()
 
-  .post("/auth/register", parseFile, async (req, res) => {
+  .post("/auth/register", uploadRegister, async (req, res) => {
     try {
       const validatedData = await registerValidator.validate(req.body, {
         abortEarly: false,
       });
 
       delete validatedData.confirm_password;
-      let date;
       if (validatedData.date) date = new Date(validatedData.date);
-
       delete validatedData.date;
 
+
+      if (req.file) {
+        validatedData.inscriptionFilePath = req.file.path;
+      }
       const data = await userRepository.create(validatedData);
       if (data.error) throw { error: data.error };
-
-      if (date) {
-        // Create rdv
-      }
-      // TODO send validation mail
-
-      // TODO create user folder and store uploaded files if sent
 
       res.json({ message: "ok" });
     } catch (err) {
@@ -54,8 +48,7 @@ const authRouter = express
       const user = await userRepository.find(validatedData.email);
 
       if (!user) throw { error: "Addresse email incorrecte" };
-      if (!(await compare(validatedData.password, user.password)))
-        throw { error: "Mot de passe incorrecte" };
+      if (!(await compare(validatedData.password, user.password))) throw { error: "Mot de passe incorrecte" };
 
       const accessToken = await tokenRepository.generate(
         user.user_id,

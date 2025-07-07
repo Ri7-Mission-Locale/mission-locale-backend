@@ -29,7 +29,10 @@ const app = express()
     }))
     .use(helmet())
     .use(cookieParser())
-    .use(express.static('public'))
+    .use("/public", (req, res, next) => {
+        res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+        next();
+    }, express.static("public"))
     .use(express.urlencoded({ extended: true }))
     .use(express.json({ limit: "10mb" }))
     .use(authRouter)

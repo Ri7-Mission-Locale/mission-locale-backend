@@ -1,8 +1,7 @@
 import express from "express";
 import NewsRepository from "../repositories/NewsRepository.js";
 import authguard from "../middlewares/authguard.js";
-import parseFile from "../middlewares/parseFile.js"
-import { log } from "console";
+import { uploadNewsImage } from "../middlewares/multer.js";
 
 const newsRepository = NewsRepository;
 const newsRouter = express.Router()
@@ -13,19 +12,28 @@ const newsRouter = express.Router()
       res.json(news);
     } catch (err) {
       res.status(400).json(err);
-     
-      
     }
   })
 
-  .post("/news",authguard,parseFile, async (req, res) => {
+  .post("/news", authguard, uploadNewsImage, async (req, res) => {
     try {
       console.log("reqqsdqsdq");
+      if (req.file) {
+        req.body.imagePath = req.file.path;
+      }
+
+      let tags = req.body.tags;
+      if (!tags) {
+        tags = [];
+      } else if (typeof tags === "string") {
+        tags = [tags];
+      }
+      req.body.tags = tags;
       
       const news = await newsRepository.create(req.body, req.user.user_id);
       res.json(news);
     } catch (err) {
-       console.log(err);
+      console.log(err);
       res.status(400).json(err);
     }
   })

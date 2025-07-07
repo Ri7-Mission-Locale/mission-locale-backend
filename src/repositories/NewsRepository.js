@@ -14,8 +14,11 @@ class NewsRepository {
           imagePath: data.imagePath,
           user_id: userId,
           tag: {
-            connect: data.tags.map((tagName) => ({ tag_name: tagName })),
-          },
+            connectOrCreate: data.tags.map((tagName) => ({
+              where: { tag_name: tagName },
+              create: { tag_name: tagName, color: "blue" },
+            })),
+          }
         },
       });
     } catch (err) {
@@ -31,11 +34,11 @@ class NewsRepository {
       return await this.db.news.findMany({
         where: name
           ? {
-              OR: [
-                { title: { contains: name } },
-                { description: { contains: name } },
-              ],
-            }
+            OR: [
+              { title: { contains: name } },
+              { description: { contains: name } },
+            ],
+          }
           : {},
         orderBy: { createdAt: order },
         skip: (page - 1) * limit,
