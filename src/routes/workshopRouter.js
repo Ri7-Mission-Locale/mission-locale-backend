@@ -16,7 +16,9 @@ const workshopRouter = express.Router()
                     id: workshop.event_id,
                     title: workshop.workshop.title,
                     start: workshop.date ? new Date(workshop.date).toISOString() : null,
-                    duration: workshop.duration
+                    duration: workshop.duration,
+                    description : workshop.workshop.description,
+                    imagePath : workshop.workshop.imagePath
                 };
             });
 
@@ -54,11 +56,13 @@ const workshopRouter = express.Router()
         }
     })
 
-    .get("/workshops/:id", async (req, res) => {
+    .get("/workshops/detail/:id", async (req, res) => {
         try {
             const id = parseInt(req.params.id);
             const workshop = await workshopRepository.find(id);
             if (!workshop) throw "Atelier non trouvé";
+            console.log(workshop);
+            
             res.json(workshop);
         } catch (err) {
             res.status(400).json({ error: err });
