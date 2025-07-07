@@ -24,8 +24,6 @@ class NewsRepository {
     }
   }
 
-  /* Find a list of news with optionnal filter */
-  //J'ai du enlver mode : "insensitive" pour pouvoir faire tourner la requête correctement
   async findMany(filter = {}) {
     const { limit = 10, page = 1, name, order = "asc" } = filter;
 
