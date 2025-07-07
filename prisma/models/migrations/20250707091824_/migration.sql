@@ -77,6 +77,20 @@ CREATE TABLE `Message` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `News` (
+    `news_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(191) NOT NULL,
+    `description` TEXT NOT NULL,
+    `imagePath` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `News_news_id_key`(`news_id`),
+    PRIMARY KEY (`news_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `QueueEntry` (
     `queue_id` INTEGER NOT NULL AUTO_INCREMENT,
     `state` ENUM('REGISTERED', 'CANCELLED', 'PENDING') NOT NULL DEFAULT 'PENDING',
@@ -121,12 +135,12 @@ CREATE TABLE `User` (
     `last_name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `phone` CHAR(8) NOT NULL,
-    `home_phone` CHAR(8) NULL,
+    `phone` CHAR(10) NOT NULL,
+    `home_phone` CHAR(10) NULL,
     `birth_date` DATETIME(3) NOT NULL,
     `role` ENUM('USER', 'ADVISOR', 'ADMIN') NOT NULL DEFAULT 'USER',
     `verified` BOOLEAN NOT NULL DEFAULT false,
-    `informations_id` INTEGER NOT NULL,
+    `informations_id` INTEGER NULL,
     `users_id` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -145,6 +159,15 @@ CREATE TABLE `Workshop` (
 
     UNIQUE INDEX `Workshop_workshop_id_key`(`workshop_id`),
     PRIMARY KEY (`workshop_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `_news_tags` (
+    `A` INTEGER NOT NULL,
+    `B` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `_news_tags_AB_unique`(`A`, `B`),
+    INDEX `_news_tags_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -175,6 +198,9 @@ ALTER TABLE `Message` ADD CONSTRAINT `Message_sender_id_fkey` FOREIGN KEY (`send
 ALTER TABLE `Message` ADD CONSTRAINT `Message_receiver_id_fkey` FOREIGN KEY (`receiver_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `News` ADD CONSTRAINT `News_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `QueueEntry` ADD CONSTRAINT `QueueEntry_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -184,10 +210,16 @@ ALTER TABLE `QueueEntry` ADD CONSTRAINT `QueueEntry_event_id_fkey` FOREIGN KEY (
 ALTER TABLE `Token` ADD CONSTRAINT `Token_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `User` ADD CONSTRAINT `User_informations_id_fkey` FOREIGN KEY (`informations_id`) REFERENCES `Informations`(`informations_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `User` ADD CONSTRAINT `User_informations_id_fkey` FOREIGN KEY (`informations_id`) REFERENCES `Informations`(`informations_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_users_id_fkey` FOREIGN KEY (`users_id`) REFERENCES `User`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_news_tags` ADD CONSTRAINT `_news_tags_A_fkey` FOREIGN KEY (`A`) REFERENCES `News`(`news_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_news_tags` ADD CONSTRAINT `_news_tags_B_fkey` FOREIGN KEY (`B`) REFERENCES `Tag`(`tag_name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_workshop_tags` ADD CONSTRAINT `_workshop_tags_A_fkey` FOREIGN KEY (`A`) REFERENCES `Tag`(`tag_name`) ON DELETE CASCADE ON UPDATE CASCADE;

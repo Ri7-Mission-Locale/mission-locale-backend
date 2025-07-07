@@ -1,5 +1,5 @@
 import express from "express";
-import NewsRepository from "../repositories/newsRepository.js";
+import NewsRepository from "../repositories/NewsRepository.js";
 import authguard from "../middlewares/authguard.js";
 
 const newsRepository = NewsRepository;

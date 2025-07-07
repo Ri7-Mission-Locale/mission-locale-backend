@@ -8,7 +8,6 @@ import userRouter from "./routes/userRouter.js";
 import newsRouter from "./routes/newsRouter.js";
 import microsoftRouter from "./routes/microsoftRouter.js";
 import cookieParser from "cookie-parser";
-import file from "./middlewares/parseFile.js";
 import profileRouter from "./routes/profileRouter.js";
 import tagRouter from "./routes/tagRouter.js";
 
