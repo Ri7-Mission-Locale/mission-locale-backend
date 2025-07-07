@@ -14,7 +14,8 @@ const workshopRouter = express.Router()
                 return {
                     id : workshop.event_id,
                     title: workshop.workshop.title,
-                    date: workshop.date ? new Date(workshop.date).toISOString().split('T')[0] : null,
+                    start: workshop.date ? new Date(workshop.date).toISOString() : null,
+                    duration : '08:00'
                 };
             });
          
@@ -24,6 +25,8 @@ const workshopRouter = express.Router()
             res.status(400).json({error: err});
         }
     })
+
+    
     .post("/workshops", async (req, res) => {
         try {
             const workshop = await workshopRepository.create(req.body);
