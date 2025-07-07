@@ -19,7 +19,6 @@ export default async function parseFile(req, res, next) {
 
             req.body = JSON.parse(fields.data);
 
-            // TODO Security for files !
             req.files = files;
             return next();
         });
