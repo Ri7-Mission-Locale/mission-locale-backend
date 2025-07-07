@@ -1,6 +1,8 @@
 import express from "express";
 import NewsRepository from "../repositories/NewsRepository.js";
 import authguard from "../middlewares/authguard.js";
+import parseFile from "../middlewares/parseFile.js"
+import { log } from "console";
 
 const newsRepository = NewsRepository;
 const newsRouter = express.Router()
@@ -11,14 +13,19 @@ const newsRouter = express.Router()
       res.json(news);
     } catch (err) {
       res.status(400).json(err);
+     
+      
     }
   })
 
-  .post("/news", authguard, async (req, res) => {
+  .post("/news",authguard,parseFile, async (req, res) => {
     try {
+      console.log("reqqsdqsdq");
+      
       const news = await newsRepository.create(req.body, req.user.user_id);
       res.json(news);
     } catch (err) {
+       console.log(err);
       res.status(400).json(err);
     }
   })
