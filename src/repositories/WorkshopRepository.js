@@ -12,6 +12,27 @@ class WorkshopRepository {
             return { error: err };
         }
     }
+
+    /* Create workshop with event */
+    async createWithEvent(data, eventData) {
+        try {
+            return await this.db.workshop.create({
+                data: {
+                    ...data,
+                    events: {
+                        create: eventData
+                    }
+                },
+                include: {
+                    events: true
+                }
+            });
+        } catch (err) {
+            console.error(err)
+            return { error: err };
+        }
+    }
+
     /* find workshop */
     async find(id) {
         try {

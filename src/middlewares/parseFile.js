@@ -1,4 +1,3 @@
-import { log } from 'console';
 import formidable from 'formidable';
 
 /**
@@ -12,7 +11,7 @@ export default async function parseFile(req, res, next) {
 
     try {
         form.parse(req, (error, fields, files) => {
-            console.log(fields,files);
+            console.log(fields, files);
             
             if (error) {
                 console.error('Error parsing form-data request:', error);

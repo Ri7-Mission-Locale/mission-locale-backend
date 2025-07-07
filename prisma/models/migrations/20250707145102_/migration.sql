@@ -36,6 +36,7 @@ CREATE TABLE `Event` (
     `content` VARCHAR(191) NOT NULL,
     `size` INTEGER NOT NULL,
     `workshop_id` INTEGER NOT NULL,
+    `duration` INTEGER NOT NULL,
 
     UNIQUE INDEX `Event_event_id_key`(`event_id`),
     PRIMARY KEY (`event_id`)
