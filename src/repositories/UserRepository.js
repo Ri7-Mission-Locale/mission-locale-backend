@@ -1,6 +1,7 @@
 import database from "../databases/database.js";
 
 class UserRepository {
+
     db = database;
 
     /* Create user */
@@ -9,8 +10,9 @@ class UserRepository {
             return await this.db.user.create({ data });
         } catch (err) {
             console.error(err)
-            return { error: err };
+            throw err;
         }
+
     }
 
     /* Find a specific user with id or mail */
@@ -48,6 +50,8 @@ class UserRepository {
             console.error(err);
             return null;
         }
+
+        
     }
 
     /* Update a specific user */
