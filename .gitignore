@@ -133,4 +133,4 @@ dist
 .pnp.*
 
 generated/
-uploads/*
+uploads/
