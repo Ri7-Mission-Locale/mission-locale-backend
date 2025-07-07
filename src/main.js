@@ -10,6 +10,7 @@ import microsoftRouter from "./routes/microsoftRouter.js";
 import cookieParser from "cookie-parser";
 import profileRouter from "./routes/profileRouter.js";
 import tagRouter from "./routes/tagRouter.js";
+import workshopRouter from "./routes/workshopRouter.js";
 
 const port = process.env.PORT;
 
@@ -35,6 +36,7 @@ const app = express()
     .use(userRouter)
     .use(profileRouter)
     .use(newsRouter)
+    .use(workshopRouter)
     .use(microsoftRouter)
     .use(tagRouter)
     .use((_, res) => setTimeout(() => res.status(404).json({ message: "Route not found" }), 3000))

@@ -1,19 +1,24 @@
 
 import express from "express";
 import WorkshopRepository from "../repositories/WorkshopRepository.js";
+import { log } from "node:console";
 
 const workshopRepository = WorkshopRepository;
 const workshopRouter = express.Router()
     .get("/workshops", async (req, res) => {
         try {
             const workshops = await workshopRepository.findMany(req.query);
+               console.log(workshops);
+               
             const parsedWorkshops = workshops.map(workshop => {
                 return {
-                    title: workshop.title,
-                    start: workshop.start ? new Date(workshop.start).toISOString() : null,
-                    end: workshop.end ? new Date(workshop.end).toISOString() : null,
+                    id : workshop.event_id,
+                    title: workshop.workshop.title,
+                    date: workshop.date ? new Date(workshop.date).toISOString().split('T')[0] : null,
                 };
             });
+         
+            console.log(parsedWorkshops);
             res.json(parsedWorkshops);
         } catch (err) {
             res.status(400).json({error: err});
