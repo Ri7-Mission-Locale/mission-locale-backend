@@ -9,7 +9,6 @@ const workshopRouter = express.Router()
     .get("/workshops", async (req, res) => {
         try {
             const workshops = await workshopRepository.findMany(req.query);
-            console.log(workshops);
 
             const parsedWorkshops = workshops.map(workshop => {
                 return {
@@ -17,12 +16,11 @@ const workshopRouter = express.Router()
                     title: workshop.workshop.title,
                     start: workshop.date ? new Date(workshop.date).toISOString() : null,
                     duration: workshop.duration,
-                    description : workshop.workshop.description,
-                    imagePath : workshop.workshop.imagePath
+                    description: workshop.workshop.description,
+                    imagePath: workshop.workshop.imagePath
                 };
             });
 
-            console.log(parsedWorkshops);
             res.json(parsedWorkshops);
         } catch (err) {
             res.status(400).json({ error: err });
@@ -47,7 +45,6 @@ const workshopRouter = express.Router()
             if (req.file) {
                 workshopData.imagePath = req.file.path;
             }
-            console.log(workshopData);
 
             const workshop = await workshopRepository.createWithEvent(workshopData, eventData);
             res.json(workshop);
@@ -61,8 +58,7 @@ const workshopRouter = express.Router()
             const id = parseInt(req.params.id);
             const workshop = await workshopRepository.find(id);
             if (!workshop) throw "Atelier non trouvé";
-            console.log(workshop);
-            
+
             res.json(workshop);
         } catch (err) {
             res.status(400).json({ error: err });

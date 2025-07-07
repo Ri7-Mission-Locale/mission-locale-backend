@@ -18,7 +18,7 @@ const microsoftRouter = express.Router()
             const startDate = new Date(start);
             const endDate = new Date(end);
             const response = await microsoft.getSchedule(startDate, endDate, duration)
-            console.log(response);
+
 
             const view = response.value[0]?.availabilityView;
             if (!view) return res.status(500).json({ error: "No availability data." });

@@ -17,7 +17,6 @@ const newsRouter = express.Router()
 
   .post("/news", authguard, uploadNewsImage, async (req, res) => {
     try {
-      console.log("reqqsdqsdq");
       if (req.file) {
         req.body.imagePath = req.file.path;
       }
@@ -33,7 +32,7 @@ const newsRouter = express.Router()
       const news = await newsRepository.create(req.body, req.user.user_id);
       res.json(news);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       res.status(400).json(err);
     }
   })

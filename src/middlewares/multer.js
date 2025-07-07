@@ -28,7 +28,7 @@ export const uploadRegister = multer({
 
 export const uploadNewsImage = multer({
     storage: multer.diskStorage({
-        destination: "public/news",
+        destination: "public/uploads/news",
         filename: (req, file, cb) => {
             cb(null, Date.now() + "_news_" + randomString(5) + file.mimetype.replace("image/", "."));
         }
@@ -46,7 +46,7 @@ export const uploadNewsImage = multer({
 
 export const uploadWorkshopImage = multer({
     storage: multer.diskStorage({
-        destination: "public/workshop",
+        destination: "public/uploads/workshop",
         filename: (req, file, cb) => {
             cb(null, Date.now() + "_workshop_" + randomString(5) + file.mimetype.replace("image/", "."));
         }
