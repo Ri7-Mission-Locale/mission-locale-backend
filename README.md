@@ -4,15 +4,25 @@ Partie backend du projet de l'application web de la Mission Locale du Pays d'Aub
 
 ## 📌 Sommaire
 
-**Routes:**
+**[Initialisation](#-Initialisation)**
+
+
+**Routes**
 
 - [👥 Utilisateurs](#-utilisateurs)
 - [🔐 Authentification](#-authentification)
-- [🙋‍♂️ Profil](#️-profil)
+- [🙋‍♂️ Profil](#-profil)
 - [📂 Gestion des Documents](#-gestion-des-documents)
 - [🗓 Gestion des Rendez-vous](#-gestion-des-rendez-vous)
 - [💬 Gestion des Messages](#-gestion-des-messages)
 - [🛠 Gestion des Ateliers et Events](#-gestion-des-ateliers-et-events)
+
+## 🛠 Initialisation
+Liste des commandes pour initialiser et utiliser le projet:
+
+**Clonez le projet**, executez: ```npm run init```,<br />
+Créer le fichier ```.env``` (en prennant pour exemple ```exemple.env```) et configurer le, <br />
+En cas de **modification des models prisma** executez: ```npm run migrate```.
 
 ## 👥 Utilisateurs
 
@@ -37,7 +47,7 @@ Gestion de l'**authentification des utilisateurs** _(inscription, connexion, sé
 | **POST** | `/auth/force-logout` | 🚪 **Déconnexion** de l'utilisateur sur **tous ses appareils** |
 | **POST** | `/auth/refresh`      | ♻️ **Rafraîchissement** du token **JWT**                       |
 
-## 🙋‍♂️ Profil
+## 🙋‍♂ Profil
 
 Gestion du **profil utilisateur** _(actions personnelles, sans besoin d'accès admin)_.
 

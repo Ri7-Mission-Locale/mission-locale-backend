@@ -3,6 +3,7 @@ import database from "../databases/database.js";
 class NewsRepository {
   db = database;
 
+
   /* Create news */
   async create(data, userId) {
     try {

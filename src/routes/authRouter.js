@@ -2,91 +2,129 @@ import express from "express";
 import authguard from "../middlewares/authguard.js";
 import UserRepository from "../repositories/UserRepository.js";
 import TokenRepository from "../repositories/TokenRepository.js";
-import { loginValidator, registerValidator } from "../validators/userValidator.js";
+import {
+  loginValidator,
+  registerValidator,
+} from "../validators/userValidator.js";
 import { compare } from "bcrypt";
 import { cookieOptions } from "../utils/cookieOptions.js";
 import jwt from "jsonwebtoken";
+import parseFile from "../middlewares/parseFile.js";
+
 
 const userRepository = UserRepository;
 const tokenRepository = TokenRepository;
 const REFRESH_TOKEN_KEY = process.env.JWT_REFRESH_KEY;
-const authRouter = express.Router()
+const authRouter = express
+  .Router()
 
-    .post("/auth/register", async (req, res) => {
-        console.log(req.body)
-        try {
-            const validatedData = await registerValidator.validate(req.body, { abortEarly: false });
-            delete validatedData.confirm_password;
-            await userRepository.create(validatedData);
+  .post("/auth/register", parseFile, async (req, res) => {
+    try {
+      const validatedData = await registerValidator.validate(req.body, {
+        abortEarly: false,
+      });
 
-            // TODO send validation mail
+      delete validatedData.confirm_password;
+      let date;
+      if (validatedData.date) date = new Date(validatedData.date);
 
-            res.json({ message: "ok" });
-        } catch (err) {
-            res.status(400).json(err);
-        }
-    })
+      delete validatedData.date;
 
-    .post("/auth/login", async (req, res) => {
-        try {
-            const validatedData = await loginValidator.validate(req.body, { abortEarly: false });
-            const user = await userRepository.find(validatedData.email);
+      const data = await userRepository.create(validatedData);
+      if (data.error) throw { error: data.error };
 
-            if (!user) throw "Addresse email incorrecte";
-            if (!await compare(validatedData.password, user.password)) throw "Mot de passe incorrecte";
+      if (date) {
+        // Create rdv
+      }
+      // TODO send validation mail
 
-            const accessToken = await tokenRepository.generate(user.user_id, "ACCESS_TOKEN", 5 * 60 * 1000);
-            const expiration = validatedData.keep_connected ? 7 * 24 * 60 * 60 * 1000 : 3 * 60 * 60 * 1000;
-            const refreshToken = await tokenRepository.generate(user.user_id, "REFRESH_TOKEN", expiration);
+      // TODO create user folder and store uploaded files if sent
 
-            return res.cookie("refresh", refreshToken, {
-                maxAge: expiration,
-                expires: new Date(Date.now() + expiration),
-                ...cookieOptions
-            }).json({ token: accessToken });
-        } catch (err) {
-            res.status(400).json(err);
-        }
-    })
+      res.json({ message: "ok" });
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
+  })
 
-    .post("/auth/refresh", async (req, res) => {
-        let accessToken = req.headers['authorization'].split(' ')[1];
-        const refreshToken = req.cookies.refresh;
+  .post("/auth/login", async (req, res) => {
+    try {
+      const validatedData = await loginValidator.validate(req.body, {
+        abortEarly: false,
+      });
+      const user = await userRepository.find(validatedData.email);
 
-        try {
-            if (!accessToken || !refreshToken) throw { message: "Unauthorized token not found" };
-            const data = jwt.verify(refreshToken, REFRESH_TOKEN_KEY);
-            if (!data) throw { message: "Unauthorized token expired" };
+      if (!user) throw { error: "Addresse email incorrecte" };
+      if (!(await compare(validatedData.password, user.password)))
+        throw { error: "Mot de passe incorrecte" };
 
-            const user = tokenRepository.find(data.key);
-            if (!user) throw { message: "Unauthorized user not found" };
+      const accessToken = await tokenRepository.generate(
+        user.user_id,
+        "ACCESS_TOKEN",
+        5 * 60 * 1000,
+      );
+      const expiration = validatedData.keep_connected
+        ? 7 * 24 * 60 * 60 * 1000
+        : 3 * 60 * 60 * 1000;
+      const refreshToken = await tokenRepository.generate(
+        user.user_id,
+        "REFRESH_TOKEN",
+        expiration,
+      );
 
-            accessToken = await tokenRepository.generate(user.user_id, "ACCESS_TOKEN", 5 * 60 * 1000);
-            res.json({ token: accessToken })
-        } catch (err) {
-            res.status(401).json(err);
-        }
-    })
+      return res
+        .cookie("refresh", refreshToken, {
+          maxAge: expiration,
+          expires: new Date(Date.now() + expiration),
+          ...cookieOptions,
+        })
+        .json({ token: accessToken, role: user.role });
+    } catch (err) {
+      res.status(400).json({ error: err });
+    }
+  })
 
-    .get("/auth/logout", authguard, async (req, res) => {
-        const refreshToken = req.cookies.refresh;
+  .post("/auth/refresh", async (req, res) => {
+    let accessToken = req.headers["authorization"].split(" ")[1];
+    const refreshToken = req.cookies.refresh;
 
-        try {
-            await tokenRepository.delete(decode(refreshToken).key);
-            res.clearCookie("refresh").json({ message: "bye" });
+    try {
+      if (!accessToken || !refreshToken)
+        throw { error: "Unauthorized token not found" };
+      const data = jwt.verify(refreshToken, REFRESH_TOKEN_KEY);
+      if (!data) throw { error: "Unauthorized token expired" };
 
-        } catch (err) {
-            res.status(301).json(err);
-        }
-    })
+      const user = tokenRepository.find(data.key);
+      if (!user) throw { error: "Unauthorized user not found" };
 
-    .get("/auth/force-logout", authguard, async (req, res) => {
-        try {
-            await tokenRepository.deleteAll(req.user.user_id);
-            res.clearCookie("refresh").json({ message: "bye" })
-        } catch (err) {
-            res.status(301).json(err);
-        }
-    });
+      accessToken = await tokenRepository.generate(
+        user.user_id,
+        "ACCESS_TOKEN",
+        5 * 60 * 1000,
+      );
+      res.json({ token: accessToken });
+    } catch (err) {
+      res.status(400).json({ error: err });
+    }
+  })
+
+  .get("/auth/logout", authguard, async (req, res) => {
+    const refreshToken = req.cookies.refresh;
+
+    try {
+      if (refreshToken) await tokenRepository.delete(jwt.decode(refreshToken).key);
+      res.clearCookie("refresh").json({ message: "bye" });
+    } catch (err) {
+      res.status(400).json({ error: err });
+    }
+  })
+
+  .get("/auth/force-logout", authguard, async (req, res) => {
+    try {
+      await tokenRepository.deleteAll(req.user.user_id);
+      res.clearCookie("refresh").json({ message: "bye" });
+    } catch (err) {
+      res.status(400).json({ error: err });
+    }
+  });
 
 export default authRouter;

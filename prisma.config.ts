@@ -1,8 +1,7 @@
-import path from 'path'
-import { PrismaConfig } from 'prisma/config'
-import "dotenv/config"
+import { defineConfig } from 'prisma/config'
+import 'dotenv/config'
 
-export default {
+export default defineConfig({
     earlyAccess: true,
-    schema: path.join('prisma', 'models'),
-} satisfies PrismaConfig
+    schema: "prisma/models",
+});

@@ -1,7 +1,6 @@
 import express from "express";
 import NewsRepository from "../repositories/newsRepository.js";
 import authguard from "../middlewares/authguard.js";
-import adminguard from "../middlewares/adminguard.js";
 
 const newsRepository = NewsRepository;
 const newsRouter = express.Router()
@@ -15,10 +14,9 @@ const newsRouter = express.Router()
     }
   })
 
-  .post("/news", async (req, res) => {
+  .post("/news", authguard, async (req, res) => {
     try {
-       const userId = "db19a8d5-378e-4985-ac8c-c74230e5ad00"
-      const news = await newsRepository.create(req.body, userId);
+      const news = await newsRepository.create(req.body, req.user.user_id);
       res.json(news);
     } catch (err) {
       res.status(400).json(err);
@@ -36,7 +34,7 @@ const newsRouter = express.Router()
     }
   })
 
-  .patch("/news/:id", async (req, res) => {
+  .patch("/news/:id", authguard, async (req, res) => {
     try {
       // const data = await updateValidator.validate(req.body, { abortEarly: false });
       const id = parseInt(req.params.id);
@@ -47,7 +45,7 @@ const newsRouter = express.Router()
     }
   })
 
-  .delete("/news/:id", async (req, res) => {
+  .delete("/news/:id", authguard, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       const news = await newsRepository.delete(id);
