@@ -23,6 +23,7 @@ const authRouter = express
         abortEarly: false,
       });
 
+      let date; //todo create rdv
       delete validatedData.confirm_password;
       if (validatedData.date) date = new Date(validatedData.date);
       delete validatedData.date;
