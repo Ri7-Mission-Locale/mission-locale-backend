@@ -11,7 +11,7 @@ const profileRouter = express.Router()
     if (user) {
       delete user.password;
       delete user.user_id;
-      
+
       res.json(req.user);
     } else {
       res.status(301).json({ message: "User not found" });
@@ -24,6 +24,8 @@ const profileRouter = express.Router()
       const datas = await updateUserValidator.validate(req.body, {
         abortEarly: false,
       });
+      console.log(datas);
+
       userRepository.update(user.user_id, datas);
     } catch (err) {
       res.status(400).json(err);
@@ -31,11 +33,10 @@ const profileRouter = express.Router()
   })
 
   .get("/profile/documents", authguard, async (req, res) => {
-    
+
   })
-  .post("/profile/documents", authguard, async (req, res) => {})
-  .patch("/profile/documents/:id", authguard, async (req, res) => {})
-  .delete("/profile/documents/:id", authguard, async (req, res) => {});
+  .post("/profile/documents", authguard, async (req, res) => { })
+  .patch("/profile/documents/:id", authguard, async (req, res) => { })
+  .delete("/profile/documents/:id", authguard, async (req, res) => { });
 
 export default profileRouter;
-  

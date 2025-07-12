@@ -42,27 +42,6 @@ export const updateUserValidator = yup.object({
         .date()
         .min(minDate, "L'utilisateur ne doit pas avoir plus de 25 ans")
         .max(today, "La date de naissance ne peut pas être dans le futur"),
-    password: yup
-        .string()
-        .min(8, "Le mot de passe doit contenir au moins 8 caractères")
-        .matches(/[a-z]/, "Le mot de passe doit contenir une lettre minuscule")
-        .matches(/[A-Z]/, "Le mot de passe doit contenir une lettre majuscule")
-        .matches(/[0-9]/, "Le mot de passe doit contenir un chiffre"),
-    confirm_password: yup
-        .string()
-        .oneOf([yup.ref('password')], "Les mots de passe ne correspondent pas")
-        .when('password', {
-            is: (val) => !!val,
-            then: (schema) => schema.required("Confirmation du mot de passe requise"),
-            otherwise: (schema) => schema.notRequired(),
-        }),
-    old_password: yup
-        .string()
-        .when(['email', 'password', 'phone'], {
-            is: (email, password, phone) => !!email || !!password || !!phone,
-            then: (schema) => schema.required("Ancien mot de passe requis"),
-            otherwise: (schema) => schema.notRequired(),
-        }),
 });
 
 export const updateValidator = yup.object({

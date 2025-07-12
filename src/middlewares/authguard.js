@@ -14,7 +14,7 @@ const userRepository = UserRepository;
  */
 async function authguard(req, res, next) {
     try {
-        const accessToken = req.headers['authorization'].split(' ')[1];
+        const accessToken = req.headers['authorization']?.split(' ')[1];
         const refreshToken = req.cookies.refresh;
         if (!accessToken || !refreshToken) throw { message: "Unauthorized" };
 
