@@ -22,7 +22,7 @@ const app = express()
 
     .use(rateLimit({
         windowMs: 10 * 60 * 1000,
-        max: 250,
+        max: 10000,
         standardHeaders: true,
         legacyHeaders: false,
         message: "Too many request.",
