@@ -78,11 +78,10 @@ const authRouter = express
   })
 
   .post("/auth/refresh", async (req, res) => {
-    let accessToken = req.headers["authorization"].split(" ")[1];
     const refreshToken = req.cookies.refresh;
 
     try {
-      if (!accessToken || !refreshToken)
+      if (!refreshToken)
         throw { error: "Unauthorized token not found" };
       const data = jwt.verify(refreshToken, REFRESH_TOKEN_KEY);
       if (!data) throw { error: "Unauthorized token expired" };
