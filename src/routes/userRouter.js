@@ -1,11 +1,11 @@
-import express from "express";
+import { Router } from "express";
 import UserRepository from "../repositories/UserRepository.js";
 import { updateValidator, userFiltersValidator } from "../validators/userValidator.js";
 import authguard from "../middlewares/authguard.js";
 import adminguard from "../middlewares/adminguard.js";
 
 const userRepository = UserRepository;
-const userRouter = express.Router()
+const userRouter = Router()
 
     .get("/users", authguard, adminguard, async (req, res) => {
         try {

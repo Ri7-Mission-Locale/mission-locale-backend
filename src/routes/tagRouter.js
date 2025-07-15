@@ -1,7 +1,7 @@
-import express from "express";
+import { Router } from "express";
 import tagRepository from "../repositories/TagRepository.js"; 
 
-const tagRouter = express.Router();
+const tagRouter = Router();
 
 tagRouter.get("/tags", async (req, res) => {
   try {

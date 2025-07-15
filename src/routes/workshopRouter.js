@@ -1,11 +1,11 @@
 
-import express from "express";
+import { Router } from "express";
 import WorkshopRepository from "../repositories/WorkshopRepository.js";
 import { log } from "node:console";
 import { uploadWorkshopImage } from "../middlewares/multer.js";
 
 const workshopRepository = WorkshopRepository;
-const workshopRouter = express.Router()
+const workshopRouter = Router()
     .get("/workshops", async (req, res) => {
         try {
             const workshops = await workshopRepository.findMany(req.query);

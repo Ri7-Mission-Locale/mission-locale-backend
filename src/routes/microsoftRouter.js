@@ -1,8 +1,8 @@
-import express from "express";
+import { Router } from "express";
 import MicrosoftService from "../repositories/MicrosoftService.js";
 
 const microsoft = MicrosoftService;
-const microsoftRouter = express.Router()
+const microsoftRouter = Router()
     .get("/callendar", async (req, res) => {
         return res.json({
             callendars: await microsoft.getCallendars()

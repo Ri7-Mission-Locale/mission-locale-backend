@@ -1,10 +1,10 @@
-import express from "express";
+import { Router } from "express";
 import NewsRepository from "../repositories/NewsRepository.js";
 import authguard from "../middlewares/authguard.js";
 import { uploadNewsImage } from "../middlewares/multer.js";
 
 const newsRepository = NewsRepository;
-const newsRouter = express.Router()
+const newsRouter = Router()
 
   .get("/news", async (req, res) => {
     try {

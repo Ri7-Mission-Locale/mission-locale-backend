@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import authguard from "../middlewares/authguard.js";
 import UserRepository from "../repositories/UserRepository.js";
 import TokenRepository from "../repositories/TokenRepository.js";
@@ -14,8 +14,7 @@ import { uploadRegister } from "../middlewares/multer.js";
 const userRepository = UserRepository;
 const tokenRepository = TokenRepository;
 const REFRESH_TOKEN_KEY = process.env.JWT_REFRESH_KEY;
-const authRouter = express
-  .Router()
+const authRouter = Router()
 
   .post("/auth/register", uploadRegister, async (req, res) => {
     try {
