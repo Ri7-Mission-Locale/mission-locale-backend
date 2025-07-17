@@ -6,7 +6,7 @@
  */
 
 async function adminguard(req, res, next) {
-    return next() //Restore soon
+
     try {
         if (!req.user.role !== "ADMIN") throw "Unauthorized";
         return next();

@@ -27,7 +27,7 @@ async function authguard(req, res, next) {
         req.user = user;
         return next();
     } catch (err) {
-        return res.status(401).json({ message: err });
+        return res.status(401).json({ err });
     }
 }
 
