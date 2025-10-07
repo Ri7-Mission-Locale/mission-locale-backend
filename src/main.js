@@ -6,7 +6,7 @@ import helmet from "helmet";
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
 import newsRouter from "./routes/newsRouter.js";
-import microsoftRouter from "./routes/microsoftRouter.js";
+//import microsoftRouter from "./routes/microsoftRouter.js";
 import cookieParser from "cookie-parser";
 import profileRouter from "./routes/profileRouter.js";
 import tagRouter from "./routes/tagRouter.js";
@@ -40,7 +40,7 @@ const app = express()
     .use(profileRouter)
     .use(newsRouter)
     .use(workshopRouter)
-    .use(microsoftRouter)
+    //.use(microsoftRouter)
     .use(tagRouter)
     .use((_, res) => setTimeout(() => res.status(404).json({ message: "Route not found" }), 3000))
     .listen(port, (err) => {
