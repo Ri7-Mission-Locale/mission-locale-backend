@@ -10,7 +10,7 @@ model WorkshopRecurrence {
     topic            String
     topicDescription String @db.Text
 
-    max_occupation Int
+    maxOccupation Int
 
     workshop_id Int
     workshop    Workshop @relation(fields: [workshop_id], references: [workshop_id])

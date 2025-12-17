@@ -1,24 +1,23 @@
 import database from "../databases/database.js";
 
-class NewsRepository {
+class ArticleRepository {
   db = database;
 
-
-  /* Create news */
-  async create(data, userId) {
+  /* Create article */
+  async create(data, authorId) {
     try {
-      return await this.db.news.create({
+      return await this.db.article.create({
         data: {
           title: data.title,
           description: data.description,
-          imagePath: data.imagePath,
-          user_id: userId,
+          backgroundImagePath: data.backgroundImagePath,
+          author_id: authorId,
           tag: {
             connectOrCreate: data.tags.map((tagName) => ({
               where: { tag_name: tagName },
               create: { tag_name: tagName, color: "blue" },
             })),
-          }
+          },
         },
       });
     } catch (err) {
@@ -34,11 +33,11 @@ class NewsRepository {
       return await this.db.news.findMany({
         where: name
           ? {
-            OR: [
-              { title: { contains: name } },
-              { description: { contains: name } },
-            ],
-          }
+              OR: [
+                { title: { contains: name } },
+                { description: { contains: name } },
+              ],
+            }
           : {},
         orderBy: { createdAt: order },
         skip: (page - 1) * limit,

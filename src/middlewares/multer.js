@@ -26,24 +26,30 @@ export const uploadRegister = multer({
 }).single("register_file");
 
 
-export const uploadNewsImage = multer({
-    storage: multer.diskStorage({
-        destination: "public/uploads/news",
-        filename: (req, file, cb) => {
-            cb(null, Date.now() + "_news_" + randomString(5) + file.mimetype.replace("image/", "."));
-        }
-    }),
-    fileFilter: (req, file, cb) => {
-        const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-        if (allowedTypes.includes(file.mimetype)) cb(null, true);
-        else cb(new Error("Seules les images sont autorisées."), false);
+export const uploadArticleImage = multer({
+  storage: multer.diskStorage({
+    destination: "public/uploads/news",
+    filename: (req, file, cb) => {
+      cb(
+        null,
+        Date.now() +
+          "_news_" +
+          randomString(5) +
+          file.mimetype.replace("image/", ".")
+      );
     },
-    limits: {
-        fileSize: 5 * 1024 * 1024,
-    },
+  }),
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (allowedTypes.includes(file.mimetype)) cb(null, true);
+    else cb(new Error("Seules les images sont autorisées."), false);
+  },
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
 }).single("register_file");
 
-
+// TODO: manage 2 files (images)
 export const uploadWorkshopImage = multer({
     storage: multer.diskStorage({
         destination: "public/uploads/workshop",

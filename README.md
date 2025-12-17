@@ -124,3 +124,5 @@ Envoi de messages entre utilisateur et conseillé
 | **POST**   | `/events/:id/queue`         | 📝 S'inscrire à un **événement** spécifique                        |
 | **GET**    | `/events/:id/queue`         | 🔍 Récupérer la liste des utilisateurs inscrits à un **événement** |
 | **DELETE** | `/events/:id/queue/:userId` | ❌ Se désinscrire d'un **événement** spécifique                    |
+
+(TODO: Ajouter les chemins des articles)
