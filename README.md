@@ -24,6 +24,9 @@ Liste des commandes pour initialiser et utiliser le projet:
 Créer le fichier ```.env``` (en prennant pour exemple ```exemple.env```) et configurer le, <br />
 En cas de **modification des models prisma** executez: ```npm run migrate```.
 
+### Manipulation développeur
+Si vous avez besoin de ré-initialiser entièrement la base de donnée en environnement de développement après un reset des migrations, veuillez utilisez la commande ```npm run migrate reset```
+
 ## 👥 Utilisateurs
 
 CRUD pour la gestion des utilisateurs depuis un compte **admin**.
